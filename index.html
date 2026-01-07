@@ -8,12 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK - SIN STORAGE -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <style>
+        /* ESTILOS EXISTENTES (los mismos que en tu código) */
         * {
             margin: 0;
             padding: 0;
@@ -2118,22 +2118,22 @@
     </footer>
 
     <script>
-        // Firebase Configuration
+        // Firebase Configuration - SIN STORAGE
         const firebaseConfig = {
             apiKey: "AIzaSyCb-rbxvaSzNdN8rN-gSDwYErzGcTAByzE",
             authDomain: "nubecitasdealgodonstore.firebaseapp.com",
             projectId: "nubecitasdealgodonstore",
-            storageBucket: "nubecitasdealgodonstore.firebasestorage.app",
+            // NOTA: No incluimos storageBucket aquí
             messagingSenderId: "86877142358",
             appId: "1:86877142358:web:8fc97ea9e5fca7cc662af7",
             measurementId: "G-WNZS0ZXN50"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase - SOLO Auth y Firestore
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
+        // NO INICIALIZAMOS STORAGE
         
         // Variables globales
         let selectedElement = null;
@@ -2526,7 +2526,7 @@
             window.switchTab = switchTab;
         }
         
-        // Funciones para Hotmart Catalog (ahora con Firebase)
+        // Funciones para Hotmart Catalog (SIN STORAGE - usando DataURLs)
         function initHotmartCatalog() {
             const hotmartUrlInput = document.getElementById('hotmart-url');
             const hotmartContinueBtn = document.getElementById('hotmart-continue');
@@ -2581,13 +2581,24 @@
             }
             
             if (deleteHotmartBtn) {
-                deleteHotmartBtn.addEventListener('click', deleteHotmartProduct);
+                deleteHotmartBtn.addEventListener('click', function() {
+                    if (editingHotmartIndex !== -1) {
+                        const product = hotmartProducts[editingHotmartIndex];
+                        deleteHotmartProductFirebase(product.id, product.title);
+                    }
+                });
             }
             
             if (editImageUploadContainer) {
                 editImageUploadContainer.addEventListener('click', function() {
                     document.getElementById('edit-product-thumbnail-file').click();
                 });
+            }
+            
+            // Evento para imagen en modal de edición
+            const editImageFileInput = document.getElementById('edit-product-thumbnail-file');
+            if (editImageFileInput) {
+                editImageFileInput.addEventListener('change', handleEditImageUpload);
             }
         }
         
@@ -2631,9 +2642,12 @@
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card canva-design-card';
                 
+                // Verificar si la imagen es DataURL (base64)
+                const imageSrc = product.thumbnail || `https://via.placeholder.com/300x200/FF6A3D/FFFFFF?text=${encodeURIComponent(product.title.substring(0, 20))}`;
+                
                 productCard.innerHTML = `
                     <div class="product-img">
-                        <img src="${product.thumbnail}" alt="${product.title}" class="canva-thumbnail" data-product-index="${index}">
+                        <img src="${imageSrc}" alt="${product.title}" class="canva-thumbnail" data-product-index="${index}">
                     </div>
                     <div class="product-info">
                         <div class="hotmart-tag">Producto Hotmart</div>
@@ -2762,22 +2776,24 @@
             const fileInput = document.getElementById('product-thumbnail-file');
             
             try {
-                // Si hay una nueva imagen, subirla a Firebase Storage
+                // Si hay una nueva imagen, convertirla a DataURL
                 if (fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    const storageRef = storage.ref(`product-images/${Date.now()}_${file.name}`);
-                    const snapshot = await storageRef.put(file);
-                    thumbnailUrl = await snapshot.ref.getDownloadURL();
+                    thumbnailUrl = await convertImageToDataURL(fileInput.files[0]);
                 }
                 
-                // Guardar producto en Firestore
+                // Si no hay imagen, usar placeholder
+                if (!thumbnailUrl) {
+                    thumbnailUrl = `https://via.placeholder.com/300x200/FF6A3D/FFFFFF?text=${encodeURIComponent(title.substring(0, 20))}`;
+                }
+                
+                // Guardar producto en Firestore (SOLO Firestore)
                 const productData = {
                     url: currentHotmartUrl,
                     title: title,
                     description: description,
                     price: price,
                     category: category || 'Sin categoría',
-                    thumbnail: thumbnailUrl,
+                    thumbnail: thumbnailUrl, // Guardamos DataURL o URL
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     createdBy: currentUser.uid,
                     createdByName: currentUser.displayName || currentUser.email
@@ -2813,11 +2829,9 @@
                 let thumbnailUrl = product.thumbnail;
                 const fileInput = document.getElementById('edit-product-thumbnail-file');
                 
+                // Si hay una nueva imagen, convertirla a DataURL
                 if (fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    const storageRef = storage.ref(`product-images/${Date.now()}_${file.name}`);
-                    const snapshot = await storageRef.put(file);
-                    thumbnailUrl = await snapshot.ref.getDownloadURL();
+                    thumbnailUrl = await convertImageToDataURL(fileInput.files[0]);
                 }
                 
                 await db.collection('hotmartProducts').doc(product.id).update({
@@ -2943,8 +2957,8 @@
                 return;
             }
             
-            if (file.size > 5 * 1024 * 1024) {
-                showNotification('La imagen es demasiado grande. Máximo 5MB.', 'error');
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('La imagen es demasiado grande. Máximo 2MB.', 'error');
                 return;
             }
             
@@ -2955,6 +2969,45 @@
                 document.getElementById('product-thumbnail').value = currentThumbnail;
             };
             reader.readAsDataURL(file);
+        }
+        
+        function handleEditImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                showNotification('Por favor, selecciona solo archivos de imagen', 'error');
+                return;
+            }
+            
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('La imagen es demasiado grande. Máximo 2MB.', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('edit-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function convertImageToDataURL(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) {
+                    resolve('');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    resolve(event.target.result);
+                };
+                reader.onerror = function(error) {
+                    reject(error);
+                };
+                reader.readAsDataURL(file);
+            });
         }
         
         function resetForm() {
@@ -2980,8 +3033,134 @@
         
         // Funciones del editor (se mantienen igual que antes)
         function initEditor() {
-            // Tu código existente del editor aquí...
-            // (Se mantiene igual que en tu código original, solo se añade la integración con Firebase)
+            // Código del editor existente (sin cambios)
+            // Aquí iría todo tu código de inicialización del editor
+            // que no requiere Firebase Storage
+            
+            // Ejemplo básico:
+            document.getElementById('upload-image').addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            addImageElement(event.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                input.click();
+            });
+            
+            document.getElementById('load-template').addEventListener('click', function() {
+                showTemplatesModal();
+            });
+            
+            // ... resto del código del editor
+        }
+        
+        function addImageElement(dataUrl) {
+            // Agregar imagen al editor usando DataURL
+            const elementId = 'element-' + elementIdCounter++;
+            const canvas = document.getElementById('canvas');
+            
+            const element = document.createElement('div');
+            element.id = elementId;
+            element.className = 'canvas-element image-element';
+            element.style.position = 'absolute';
+            element.style.left = '50px';
+            element.style.top = '50px';
+            element.style.width = '200px';
+            element.style.height = '200px';
+            element.style.backgroundImage = `url(${dataUrl})`;
+            element.style.backgroundSize = 'contain';
+            element.style.backgroundRepeat = 'no-repeat';
+            element.style.backgroundPosition = 'center';
+            
+            canvas.appendChild(element);
+            canvasElements.push({
+                id: elementId,
+                type: 'image',
+                element: element,
+                dataUrl: dataUrl
+            });
+            
+            setupElementEvents(element);
+        }
+        
+        function setupElementEvents(element) {
+            // Configurar eventos de arrastre, etc.
+        }
+        
+        function showTemplatesModal() {
+            // Mostrar modal de plantillas
+            const modal = document.getElementById('templates-modal');
+            modal.style.display = 'flex';
+            
+            // Cargar plantillas
+            const grid = document.getElementById('templates-grid');
+            grid.innerHTML = '';
+            
+            templates.forEach(template => {
+                const item = document.createElement('div');
+                item.className = 'template-item';
+                item.innerHTML = `
+                    <div class="template-img">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="template-name">${template.name}</div>
+                `;
+                item.addEventListener('click', function() {
+                    loadTemplate(template);
+                    modal.style.display = 'none';
+                });
+                grid.appendChild(item);
+            });
+            
+            document.getElementById('cancel-templates').addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        }
+        
+        function loadTemplate(template) {
+            // Cargar plantilla en el editor
+            const canvas = document.getElementById('canvas');
+            canvas.innerHTML = '';
+            
+            // Configurar fondo
+            if (template.backgroundImage) {
+                canvas.style.backgroundImage = `url(${template.backgroundImage})`;
+            } else {
+                canvas.style.backgroundColor = template.backgroundColor;
+            }
+            canvas.style.width = template.width + 'px';
+            canvas.style.height = template.height + 'px';
+            
+            // Cargar elementos
+            template.elements.forEach(elementConfig => {
+                if (elementConfig.type === 'text') {
+                    // Crear elemento de texto
+                    const element = document.createElement('div');
+                    element.className = 'canvas-element text-element';
+                    element.style.position = 'absolute';
+                    element.style.left = elementConfig.x + 'px';
+                    element.style.top = elementConfig.y + 'px';
+                    element.style.fontSize = elementConfig.fontSize + 'px';
+                    element.style.color = elementConfig.color;
+                    element.style.fontFamily = elementConfig.fontFamily;
+                    element.style.textAlign = elementConfig.textAlign;
+                    element.style.cursor = 'move';
+                    element.textContent = elementConfig.content;
+                    
+                    canvas.appendChild(element);
+                    setupElementEvents(element);
+                }
+            });
+            
+            document.getElementById('no-image-message').style.display = 'none';
         }
         
         // Hacer funciones disponibles globalmente
@@ -3006,4 +3185,5 @@
     </script>
 </body>
 </html>
+
 
