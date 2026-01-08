@@ -1714,123 +1714,26 @@
             </div>
         </div>
 
-        <!-- EDITOR -->
+        <!-- EDITOR (PESTAÑA VACÍA) -->
         <div class="tab-content" id="editor">
             <div class="section-title">
                 <h2>Editor de Plantillas</h2>
-                <p>Selecciona una plantilla y personalízala con tus textos e imágenes</p>
+                <p>Esta funcionalidad está actualmente en desarrollo</p>
             </div>
             
-            <div class="editor-container">
-                <div class="editor-toolbar">
-                    <div class="tool-group">
-                        <div class="editor-tool" id="upload-image">
-                            <i class="fas fa-image"></i> Cargar Imagen
-                        </div>
-                        <div class="editor-tool" id="load-template">
-                            <i class="fas fa-file-image"></i> Plantillas
-                        </div>
-                        <div class="editor-tool" id="add-text">
-                            <i class="fas fa-font"></i> Agregar Texto
-                        </div>
-                    </div>
-                    <div class="tool-group">
-                        <div class="editor-tool" id="delete-element">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </div>
-                        <div class="editor-tool" id="bring-forward">
-                            <i class="fas fa-arrow-up"></i> Traer al Frente
-                        </div>
-                        <div class="editor-tool" id="send-backward">
-                            <i class="fas fa-arrow-down"></i> Enviar Atrás
-                        </div>
-                    </div>
-                    <div class="tool-group">
-                        <div class="zoom-controls">
-                            <button class="btn btn-small" id="zoom-in"><i class="fas fa-search-plus"></i></button>
-                            <span id="zoom-level">100%</span>
-                            <button class="btn btn-small" id="zoom-out"><i class="fas fa-search-minus"></i></button>
-                            <button class="btn btn-small" id="fit-to-screen">Ajustar</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="editor-container" style="text-align: center; padding: 60px 20px;">
+                <i class="fas fa-tools" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+                <h3 style="color: #666; margin-bottom: 15px;">¡Próximamente!</h3>
+                <p style="color: #888; max-width: 500px; margin: 0 auto;">El editor de plantillas está siendo mejorado con nuevas funciones. Estará disponible pronto.</p>
+                <p style="color: #aaa; font-size: 14px; margin-top: 10px;">Mientras tanto, puedes explorar nuestras otras secciones.</p>
                 
-                <div class="editor-content">
-                    <div class="editor-canvas-container">
-                        <div class="editor-canvas" id="canvas">
-                            <div id="no-image-message" style="text-align: center; padding: 50px; color: #999;">
-                                <i class="fas fa-image" style="font-size: 48px; margin-bottom: 20px;"></i>
-                                <p>Para comenzar, selecciona una plantilla del menú</p>
-                                <button class="btn btn-primary" id="quick-template-btn" style="margin-top: 20px;">
-                                    <i class="fas fa-bolt"></i> Cargar Plantilla Creativa
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="editor-controls">
-                        <div class="control-group">
-                            <label for="text-input">Texto:</label>
-                            <input type="text" id="text-input" placeholder="Escribe tu texto aquí">
-                        </div>
-                        
-                        <div class="control-group">
-                            <label>Color del Texto:</label>
-                            <div class="color-picker" id="color-picker">
-                                <div class="color-option selected" style="background-color: #000000;" data-color="#000000"></div>
-                                <div class="color-option" style="background-color: #ff6b8b;" data-color="#ff6b8b"></div>
-                                <div class="color-option" style="background-color: #8a6bff;" data-color="#8a6bff"></div>
-                                <div class="color-option" style="background-color: #6bffd8;" data-color="#6bffd8"></div>
-                                <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                                <div class="color-option" style="background-color: #ff0000;" data-color="#ff0000"></div>
-                                <div class="color-option" style="background-color: #00ff00;" data-color="#00ff00"></div>
-                                <div class="color-option" style="background-color: #0000ff;" data-color="#0000ff"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="control-group">
-                            <label for="font-size">Tamaño de Fuente:</label>
-                            <input type="range" id="font-size" min="10" max="72" value="24">
-                            <span id="font-size-value">24px</span>
-                        </div>
-                        
-                        <div class="control-group">
-                            <label>Fuente:</label>
-                            <div class="font-options">
-                                <div class="font-option selected" data-font="Arial">Arial</div>
-                                <div class="font-option" data-font="'Dancing Script', cursive">Dancing Script</div>
-                                <div class="font-option" data-font="'Times New Roman', serif">Times New Roman</div>
-                                <div class="font-option" data-font="'Courier New', monospace">Courier New</div>
-                            </div>
-                        </div>
-                        
-                        <div class="control-group">
-                            <label for="text-align">Alineación:</label>
-                            <select id="text-align">
-                                <option value="left">Izquierda</option>
-                                <option value="center" selected>Centro</option>
-                                <option value="right">Derecha</option>
-                            </select>
-                        </div>
-                        
-                        <div class="elements-panel">
-                            <h4>Elementos en la plantilla:</h4>
-                            <div id="elements-list"></div>
-                        </div>
-                        
-                        <div class="image-info" id="image-info" style="display: none;">
-                            <strong>Información de la plantilla:</strong>
-                            <div id="image-dimensions"></div>
-                            <div id="image-size"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="editor-actions">
-                    <button class="btn" id="download-modal-btn">
-                        <i class="fas fa-download"></i> Descargar Diseño
+                <div style="margin-top: 30px;">
+                    <button class="btn" onclick="switchTab('catalogo')">
+                        <i class="fas fa-shopping-cart"></i> Ver Catálogo
                     </button>
-                    <button class="btn btn-primary" id="reset-btn">Nuevo Proyecto</button>
+                    <button class="btn btn-primary" onclick="switchTab('cursos')" style="margin-left: 10px;">
+                        <i class="fas fa-graduation-cap"></i> Explorar Cursos
+                    </button>
                 </div>
             </div>
         </div>
@@ -2232,7 +2135,6 @@
             initAuth();
             initTabs();
             initHotmartCatalog();
-            initEditor();
             initSearch();
         });
         
@@ -3045,46 +2947,6 @@
             currentThumbnail = '';
         }
         
-        // EDITOR BÁSICO
-        function initEditor() {
-            document.getElementById('upload-image')?.addEventListener('click', function() {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            showNotification('Imagen cargada correctamente', 'success');
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                };
-                input.click();
-            });
-            
-            document.getElementById('load-template')?.addEventListener('click', function() {
-                document.getElementById('templates-modal').style.display = 'flex';
-            });
-            
-            document.getElementById('cancel-templates')?.addEventListener('click', function() {
-                document.getElementById('templates-modal').style.display = 'none';
-            });
-            
-            document.getElementById('download-modal-btn')?.addEventListener('click', function() {
-                document.getElementById('download-modal').style.display = 'flex';
-            });
-            
-            document.getElementById('cancel-download')?.addEventListener('click', function() {
-                document.getElementById('download-modal').style.display = 'none';
-            });
-            
-            document.getElementById('quick-template-btn')?.addEventListener('click', function() {
-                showNotification('Plantilla cargada correctamente', 'success');
-            });
-        }
-        
         // FUNCIONES DE NOTIFICACIÓN
         function showNotification(message, type) {
             const notification = document.createElement('div');
@@ -3268,6 +3130,7 @@
     </script>
 </body>
 </html>
+
 
 
 
