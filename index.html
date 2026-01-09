@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papelería Creativa - Editor de Plantillas</title>
+    <title>Papelería Creativa - Videos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- Firebase SDK - SIN STORAGE -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-        /* ESTILOS GENERALES */
+        /* ESTILOS GENERALES - TODOS LOS ORIGINALES MÁS NUEVOS */
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +26,8 @@
             --secondary: #8a6bff;
             --accent: #6bffd8;
             --hotmart: #FF6A3D;
+            --youtube: #FF0000;
+            --vimeo: #1ab7ea;
             --light: #f9f7fe;
             --dark: #333344;
             --success: #4CAF50;
@@ -161,7 +163,7 @@
             margin-left: 5px;
         }
         
-        /* MENÚ MÓVIL - ¡ARREGLADO! */
+        /* MENÚ MÓVIL */
         .mobile-menu {
             display: none;
             position: fixed;
@@ -618,7 +620,7 @@
         }
         
         /* MODALES */
-        .templates-modal, .modal, .auth-modal, .edit-hotmart-modal {
+        .templates-modal, .modal, .auth-modal, .edit-hotmart-modal, .edit-video-modal, .video-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -631,7 +633,7 @@
             align-items: center;
         }
         
-        .templates-content, .modal-content, .auth-content, .edit-hotmart-content {
+        .templates-content, .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
@@ -641,11 +643,11 @@
             overflow-y: auto;
         }
         
-        .modal-content, .auth-content, .edit-hotmart-content {
+        .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content {
             max-width: 500px;
         }
         
-        .edit-hotmart-content {
+        .edit-hotmart-content, .edit-video-content {
             max-width: 600px;
         }
         
@@ -690,7 +692,7 @@
         /* CATÁLOGO */
         .catalog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
         }
         
@@ -930,6 +932,159 @@
             background-color: #E55A2D;
         }
         
+        /* SECCIÓN DE VIDEOS */
+        .videos-admin-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .videos-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .videos-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .videos-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .videos-help {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .videos-help ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            list-style: none;
+        }
+        
+        .videos-help li {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .videos-help li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .video-thumbnail:hover {
+            transform: scale(1.02);
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-info h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .video-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .video-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--youtube);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .video-link-btn:hover {
+            background-color: #cc0000;
+        }
+        
+        .videos-empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .videos-empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .videos-empty-state h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .video-card {
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .video-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .video-tag {
+            display: inline-block;
+            background-color: var(--youtube);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .vimeo-tag {
+            background-color: var(--vimeo);
+        }
+        
+        .other-tag {
+            background-color: var(--secondary);
+        }
+        
         /* FOOTER */
         footer {
             background-color: var(--dark);
@@ -1033,6 +1188,37 @@
             border-color: var(--hotmart);
         }
         
+        .video-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .video-type-btn {
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f5f5f5;
+        }
+        
+        .video-type-btn.active {
+            background-color: var(--youtube);
+            color: white;
+            border-color: var(--youtube);
+        }
+        
+        .vimeo-type-btn.active {
+            background-color: var(--vimeo);
+            border-color: var(--vimeo);
+        }
+        
+        .other-type-btn.active {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
         .url-example {
             background-color: #f8f9fa;
             padding: 10px;
@@ -1042,18 +1228,18 @@
             margin-top: 5px;
         }
         
-        .product-form {
+        .product-form, .video-form {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
         }
         
-        .product-form .control-group {
+        .product-form .control-group, .video-form .control-group {
             margin-bottom: 0;
         }
         
-        .product-form label {
+        .product-form label, .video-form label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
@@ -1062,7 +1248,10 @@
         
         .product-form input,
         .product-form textarea,
-        .product-form select {
+        .product-form select,
+        .video-form input,
+        .video-form textarea,
+        .video-form select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -1070,7 +1259,7 @@
             font-size: 14px;
         }
         
-        .product-form textarea {
+        .product-form textarea, .video-form textarea {
             min-height: 80px;
             resize: vertical;
         }
@@ -1203,7 +1392,7 @@
             margin-bottom: 10px;
         }
         
-        .product-preview {
+        .product-preview, .video-preview {
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 15px;
@@ -1211,7 +1400,7 @@
             background-color: #f9f9f9;
         }
         
-        .product-preview h4 {
+        .product-preview h4, .video-preview h4 {
             margin-bottom: 10px;
             color: var(--hotmart);
         }
@@ -1293,7 +1482,125 @@
             color: #c62828;
         }
         
-        /* RESPONSIVE - ¡ARREGLADO! */
+        /* MODAL DE VIDEO */
+        .video-modal-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .video-modal-content h3 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            margin-bottom: 20px;
+        }
+        
+        .video-player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .video-description {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .video-description h4 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        /* PLANES Y CURSOS (ORIGINALES) */
+        .plans-grid, .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .plan-card, .course-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .plan-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .plan-header, .course-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .plan-header h3, .course-header h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .plan-price {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+        
+        .plan-features, .course-features {
+            padding: 20px;
+        }
+        
+        .plan-features ul, .course-features ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .plan-features li, .course-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .plan-features li i, .course-features li i {
+            color: var(--primary);
+        }
+        
+        .course-duration {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .course-duration i {
+            color: var(--primary);
+        }
+        
+        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .hamburger-btn {
                 display: block;
@@ -1361,11 +1668,11 @@
                 flex: 1;
             }
             
-            .canva-form {
+            .canva-form, .videos-form {
                 flex-direction: column;
             }
             
-            .canva-input {
+            .canva-input, .videos-input {
                 min-width: 100%;
             }
             
@@ -1397,7 +1704,7 @@
                 font-size: 12px;
             }
             
-            .modal-content, .auth-content, .edit-hotmart-content {
+            .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content {
                 padding: 20px;
                 width: 95%;
             }
@@ -1577,15 +1884,15 @@
                         <i class="fas fa-graduation-cap"></i>
                     </div>
                     <div class="product-info">
-                        <h3>Cursos Creativos</h3>
-                        <p>Aprende nuevas técnicas con nuestros cursos especializados. Desde lettering hasta diseño digital.</p>
-                        <button class="btn btn-small" onclick="switchTab('cursos')">Explorar Cursos</button>
+                        <h3>Videos Tutoriales</h3>
+                        <p>Aprende nuevas técnicas con nuestra colección de videos tutoriales. Desde lettering hasta diseño digital paso a paso.</p>
+                        <button class="btn btn-small" onclick="switchTab('videos')">Ver Videos</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- CATÁLOGO -->
+        <!-- CATÁLOGO HOTMART -->
         <div class="tab-content" id="catalogo">
             <div id="admin-section" style="display: none;">
                 <div class="section-title">
@@ -1714,7 +2021,7 @@
             </div>
         </div>
 
-        <!-- EDITOR (PESTAÑA VACÍA) -->
+        <!-- EDITOR -->
         <div class="tab-content" id="editor">
             <div class="section-title">
                 <h2>Editor de Plantillas</h2>
@@ -1731,8 +2038,8 @@
                     <button class="btn" onclick="switchTab('catalogo')">
                         <i class="fas fa-shopping-cart"></i> Ver Catálogo
                     </button>
-                    <button class="btn btn-primary" onclick="switchTab('cursos')" style="margin-left: 10px;">
-                        <i class="fas fa-graduation-cap"></i> Explorar Cursos
+                    <button class="btn btn-primary" onclick="switchTab('videos')" style="margin-left: 10px;">
+                        <i class="fas fa-play-circle"></i> Ver Videos
                     </button>
                 </div>
             </div>
@@ -1875,57 +2182,169 @@
             </div>
         </div>
 
-        <!-- VIDEOS -->
+        <!-- VIDEOS (NUEVA SECCIÓN) -->
         <div class="tab-content" id="videos">
-            <div class="section-title">
-                <h2>Videos Tutoriales</h2>
-                <p>Aprende viendo, paso a paso</p>
+            <!-- SECCIÓN DE ADMINISTRADOR -->
+            <div id="admin-videos-section" style="display: none;">
+                <div class="section-title">
+                    <h2>Gestión de Videos Tutoriales</h2>
+                    <p>Publica y gestiona tus videos tutoriales</p>
+                </div>
+                
+                <div class="videos-admin-section" id="video-step1-section">
+                    <h3 style="margin-bottom: 20px;">Paso 1: Ingresa el enlace de tu video</h3>
+                    <p style="margin-bottom: 20px; color: #666;">Soporta YouTube, Vimeo y otros servicios</p>
+                    
+                    <div class="video-type-selector">
+                        <div class="video-type-btn active" data-type="youtube">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </div>
+                        <div class="video-type-btn" data-type="vimeo">
+                            <i class="fab fa-vimeo"></i> Vimeo
+                        </div>
+                        <div class="video-type-btn" data-type="other">
+                            <i class="fas fa-video"></i> Otros
+                        </div>
+                    </div>
+                    
+                    <div class="videos-form">
+                        <input type="url" class="videos-input" id="video-url" placeholder="https://www.youtube.com/watch?v=ejemplo123">
+                        <button class="btn btn-primary" id="video-continue">
+                            <i class="fas fa-arrow-right"></i> Extraer Información
+                        </button>
+                    </div>
+                    
+                    <div class="loading-indicator" id="video-loading-indicator">
+                        <div class="loading-spinner"></div>
+                        <p>Extrayendo información del video...</p>
+                    </div>
+                    
+                    <div class="error-message" id="video-error-message"></div>
+                    
+                    <div class="url-example" id="video-url-example">
+                        <strong>Ejemplos válidos:</strong><br>
+                        YouTube: https://www.youtube.com/watch?v=dQw4w9WgXcQ<br>
+                        Vimeo: https://vimeo.com/123456789<br>
+                        Otros: https://tu-dominio.com/video.mp4
+                    </div>
+                    
+                    <div class="videos-help">
+                        <strong>¿Qué hace el sistema?</strong>
+                        <ul>
+                            <li>Extrae automáticamente la <strong>miniatura</strong> del video</li>
+                            <li>Obtiene el <strong>título</strong> del video (si está disponible)</li>
+                            <li>Genera enlace de <strong>embed</strong> para reproducir</li>
+                            <li>Puedes personalizar título y descripción</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="videos-admin-section" id="video-step2-section" style="display: none;">
+                    <h3 style="margin-bottom: 20px;">Paso 2: Verifica y completa la información</h3>
+                    <p style="margin-bottom: 20px; color: #666;">Puedes editar la información extraída automáticamente</p>
+                    
+                    <div class="success-message" id="video-success-message">
+                        <i class="fas fa-check-circle"></i> ¡Información del video extraída exitosamente!
+                    </div>
+                    
+                    <div class="video-preview" id="video-preview">
+                        <h4>Vista previa del video:</h4>
+                        <div id="video-preview-content"></div>
+                    </div>
+                    
+                    <div class="video-form">
+                        <div class="control-group">
+                            <label for="video-title">Título del Video *</label>
+                            <input type="text" id="video-title" class="videos-input" placeholder="Ej: Tutorial de Lettering Básico" required>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="video-description">Descripción *</label>
+                            <textarea id="video-description" class="videos-input" rows="4" placeholder="Describe el contenido del video..." required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="control-group">
+                                <label for="video-category">Categoría *</label>
+                                <select id="video-category" class="videos-input" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="Lettering">Lettering</option>
+                                    <option value="Diseño Digital">Diseño Digital</option>
+                                    <option value="Canva">Canva</option>
+                                    <option value="Illustrator">Illustrator</option>
+                                    <option value="Photoshop">Photoshop</option>
+                                    <option value="Tutoriales">Tutoriales</option>
+                                    <option value="Negocios">Negocios</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="video-duration">Duración (opcional)</label>
+                                <input type="text" id="video-duration" class="videos-input" placeholder="Ej: 15:30">
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="video-thumbnail">Miniatura del Video</label>
+                            <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Si no se encontró una miniatura automáticamente, puedes subir una:</p>
+                            <div class="image-upload-container" id="video-image-upload-container">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Haz clic para subir una miniatura (opcional)</p>
+                                <p><small>Tamaño recomendado: 300x200px</small></p>
+                            </div>
+                            <input type="file" id="video-thumbnail-file" accept="image/*" style="display: none;">
+                            <input type="hidden" id="video-thumbnail" value="">
+                            <div class="thumbnail-preview" id="video-thumbnail-preview">
+                                <i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn" id="video-back-to-step1">
+                                <i class="fas fa-arrow-left"></i> Atrás
+                            </button>
+                            <button class="btn btn-primary" id="video-submit">
+                                <i class="fas fa-check"></i> Publicar Video
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="videos-grid">
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                    <div class="video-info">
-                        <h3>Cómo crear tu primera plantilla</h3>
-                        <div class="video-duration">
-                            <i class="fas fa-clock"></i>
-                            <span>15 minutos</span>
-                        </div>
-                        <p>Aprende a crear una plantilla básica desde cero usando nuestro editor.</p>
-                        <button class="btn btn-small" style="width: 100%;">Ver Tutorial</button>
-                    </div>
-                </div>
+            <!-- SECCIÓN PÚBLICA -->
+            <div class="section-title" id="public-videos-title">
+                <h2>Videos Tutoriales</h2>
+                <p>Aprende con nuestra colección de videos creativos</p>
+            </div>
+            
+            <!-- Filtros -->
+            <div style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
+                <select id="category-filter" class="videos-input" style="width: auto; min-width: 200px;">
+                    <option value="">Todas las categorías</option>
+                    <option value="Lettering">Lettering</option>
+                    <option value="Diseño Digital">Diseño Digital</option>
+                    <option value="Canva">Canva</option>
+                    <option value="Illustrator">Illustrator</option>
+                    <option value="Photoshop">Photoshop</option>
+                    <option value="Tutoriales">Tutoriales</option>
+                    <option value="Negocios">Negocios</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Otros">Otros</option>
+                </select>
                 
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                    <div class="video-info">
-                        <h3>Publicar productos en Hotmart</h3>
-                        <div class="video-duration">
-                            <i class="fas fa-clock"></i>
-                            <span>22 minutos</span>
-                        </div>
-                        <p>Guía completa para publicar y promocionar productos en Hotmart.</p>
-                        <button class="btn btn-small" style="width: 100%;">Ver Tutorial</button>
-                    </div>
-                </div>
-                
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                    <div class="video-info">
-                        <h3>Técnicas de lettering básico</h3>
-                        <div class="video-duration">
-                            <i class="fas fa-clock"></i>
-                            <span>18 minutos</span>
-                        </div>
-                        <p>Fundamentos del lettering moderno para principiantes.</p>
-                        <button class="btn btn-small" style="width: 100%;">Ver Tutorial</button>
-                    </div>
+                <button class="btn" id="clear-filters">
+                    <i class="fas fa-filter"></i> Limpiar filtros
+                </button>
+            </div>
+            
+            <!-- Grid de Videos -->
+            <div class="catalog-grid" id="videos-container">
+                <div id="videos-empty-state" class="videos-empty-state">
+                    <i class="fas fa-video-slash"></i>
+                    <h3>No hay videos publicados aún</h3>
+                    <p>Espera a que un administrador publique videos tutoriales.</p>
                 </div>
             </div>
         </div>
@@ -2049,6 +2468,98 @@
         </div>
     </div>
 
+    <!-- MODAL DE EDICIÓN DE VIDEO -->
+    <div class="edit-video-modal" id="edit-video-modal">
+        <div class="edit-video-content">
+            <h3>Editar Video</h3>
+            
+            <div class="control-group">
+                <label for="edit-video-title">Título del Video:</label>
+                <input type="text" id="edit-video-title" class="videos-input" placeholder="Título del video">
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-video-description">Descripción:</label>
+                <textarea id="edit-video-description" class="videos-input" rows="4" placeholder="Descripción del video"></textarea>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-video-category">Categoría:</label>
+                <select id="edit-video-category" class="videos-input">
+                    <option value="">Seleccionar categoría</option>
+                    <option value="Lettering">Lettering</option>
+                    <option value="Diseño Digital">Diseño Digital</option>
+                    <option value="Canva">Canva</option>
+                    <option value="Illustrator">Illustrator</option>
+                    <option value="Photoshop">Photoshop</option>
+                    <option value="Tutoriales">Tutoriales</option>
+                    <option value="Negocios">Negocios</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-video-duration">Duración:</label>
+                <input type="text" id="edit-video-duration" class="videos-input" placeholder="15:30">
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-video-thumbnail">Miniatura:</label>
+                <div class="image-upload-container" id="edit-video-image-upload-container">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Haz clic para cambiar la miniatura</p>
+                </div>
+                <input type="file" id="edit-video-thumbnail-file" accept="image/*" style="display: none;">
+                <div class="thumbnail-preview" id="edit-video-thumbnail-preview">
+                    <i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" id="cancel-edit-video">Cancelar</button>
+                <button class="btn delete-btn" id="delete-video-btn">
+                    <i class="fas fa-trash"></i> Eliminar Video
+                </button>
+                <button class="btn btn-primary" id="save-edit-video">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE REPRODUCCIÓN DE VIDEO -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-content">
+            <h3 id="video-modal-title"></h3>
+            
+            <div class="video-player-container" id="video-player-container"></div>
+            
+            <div class="video-description">
+                <h4>Descripción</h4>
+                <p id="video-modal-description"></p>
+                <div style="margin-top: 15px; display: flex; gap: 20px; font-size: 14px; color: #666;">
+                    <div>
+                        <i class="fas fa-tag"></i>
+                        <span id="video-modal-category"></span>
+                    </div>
+                    <div>
+                        <i class="fas fa-clock"></i>
+                        <span id="video-modal-duration"></span>
+                    </div>
+                    <div>
+                        <i class="fas fa-calendar"></i>
+                        <span id="video-modal-date"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" id="close-video-modal">
+                    <i class="fas fa-times"></i> Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
         <div class="container">
@@ -2125,9 +2636,14 @@
         let currentUser = null;
         let isAdmin = false;
         let hotmartProducts = [];
+        let videos = [];
         let editingHotmartIndex = -1;
+        let editingVideoIndex = -1;
         let currentHotmartUrl = '';
         let currentThumbnail = '';
+        let currentVideoUrl = '';
+        let currentVideoThumbnail = '';
+        let currentVideoType = 'youtube';
         
         // INICIALIZAR TODO
         document.addEventListener('DOMContentLoaded', function() {
@@ -2135,21 +2651,19 @@
             initAuth();
             initTabs();
             initHotmartCatalog();
+            initVideoCatalog();
+            initVideoTypeSelector();
             initSearch();
         });
         
-        // MENÚ HAMBURGUESA - ¡ARREGLADO!
+        // MENÚ HAMBURGUESA
         function initMobileMenu() {
             const hamburgerBtn = document.getElementById('hamburger-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const overlay = document.getElementById('overlay');
             
-            if (!hamburgerBtn || !mobileMenu || !overlay) {
-                console.error('Elementos del menú móvil no encontrados');
-                return;
-            }
+            if (!hamburgerBtn || !mobileMenu || !overlay) return;
             
-            // Abrir menú
             hamburgerBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 mobileMenu.classList.add('active');
@@ -2157,23 +2671,12 @@
                 document.body.style.overflow = 'hidden';
             });
             
-            // Cerrar menú con overlay
             overlay.addEventListener('click', function() {
                 closeMobileMenu();
             });
             
-            // Cerrar menú con Escape
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Cerrar menú al hacer clic en enlaces del menú
-            document.querySelectorAll('.mobile-nav-icons a, .mobile-user-actions button, .mobile-tab').forEach(element => {
-                element.addEventListener('click', function() {
-                    setTimeout(closeMobileMenu, 300);
-                });
+                if (e.key === 'Escape') closeMobileMenu();
             });
         }
         
@@ -2195,26 +2698,21 @@
                     isAdmin = userDoc.exists && userDoc.data().isAdmin === true;
                     updateUIForUser(user, isAdmin);
                     loadHotmartProducts();
+                    loadVideos();
                 } else {
                     updateUIForGuest();
                     loadHotmartProducts();
+                    loadVideos();
                 }
             });
             
+            // Event listeners para autenticación
             document.getElementById('login-btn')?.addEventListener('click', handleLogin);
             document.getElementById('register-btn')?.addEventListener('click', handleRegister);
             document.getElementById('cancel-auth')?.addEventListener('click', hideAuthModal);
             
             document.getElementById('login-tab')?.addEventListener('click', () => switchAuthTab('login'));
             document.getElementById('register-tab')?.addEventListener('click', () => switchAuthTab('register'));
-            
-            document.getElementById('login-password')?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleLogin();
-            });
-            
-            document.getElementById('register-password')?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleRegister();
-            });
         }
         
         function updateUIForUser(user, adminStatus) {
@@ -2259,10 +2757,15 @@
                 `;
             }
             
-            // ADMIN SECTION
+            // ADMIN SECTIONS
             const adminSection = document.getElementById('admin-section');
             if (adminSection) {
                 adminSection.style.display = adminStatus ? 'block' : 'none';
+            }
+            
+            const adminVideosSection = document.getElementById('admin-videos-section');
+            if (adminVideosSection) {
+                adminVideosSection.style.display = adminStatus ? 'block' : 'none';
             }
         }
         
@@ -2301,10 +2804,15 @@
                 `;
             }
             
-            // ADMIN SECTION
+            // ADMIN SECTIONS
             const adminSection = document.getElementById('admin-section');
             if (adminSection) {
                 adminSection.style.display = 'none';
+            }
+            
+            const adminVideosSection = document.getElementById('admin-videos-section');
+            if (adminVideosSection) {
+                adminVideosSection.style.display = 'none';
             }
         }
         
@@ -2385,39 +2893,18 @@
         }
         
         function showAuthModal() {
-            const authModal = document.getElementById('auth-modal');
-            if (authModal) {
-                authModal.style.display = 'flex';
-                switchAuthTab('login');
-            }
+            document.getElementById('auth-modal').style.display = 'flex';
         }
         
         function hideAuthModal() {
-            const authModal = document.getElementById('auth-modal');
-            if (authModal) {
-                authModal.style.display = 'none';
-                document.getElementById('login-email').value = '';
-                document.getElementById('login-password').value = '';
-                document.getElementById('register-name').value = '';
-                document.getElementById('register-email').value = '';
-                document.getElementById('register-password').value = '';
-                const loginMessage = document.getElementById('login-message');
-                const registerMessage = document.getElementById('register-message');
-                if (loginMessage) loginMessage.style.display = 'none';
-                if (registerMessage) registerMessage.style.display = 'none';
-            }
+            document.getElementById('auth-modal').style.display = 'none';
         }
         
         function switchAuthTab(tab) {
-            const loginTab = document.getElementById('login-tab');
-            const registerTab = document.getElementById('register-tab');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            
-            if (loginTab) loginTab.classList.toggle('active', tab === 'login');
-            if (registerTab) registerTab.classList.toggle('active', tab === 'register');
-            if (loginForm) loginForm.classList.toggle('active', tab === 'login');
-            if (registerForm) registerForm.classList.toggle('active', tab === 'register');
+            document.getElementById('login-tab').classList.toggle('active', tab === 'login');
+            document.getElementById('register-tab').classList.toggle('active', tab === 'register');
+            document.getElementById('login-form').classList.toggle('active', tab === 'login');
+            document.getElementById('register-form').classList.toggle('active', tab === 'register');
         }
         
         // TABS
@@ -2431,19 +2918,18 @@
         
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.mobile-tab').forEach(tab => tab.classList.remove('active'));
+            
             document.getElementById(tabName)?.classList.add('active');
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.toggle('active', tab.getAttribute('data-tab') === tabName);
-            });
-            
-            document.querySelectorAll('.mobile-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.getAttribute('data-tab') === tabName);
-            });
+            document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('active');
             
             if (tabName === 'catalogo') {
                 loadHotmartProducts();
                 resetForm();
+            } else if (tabName === 'videos') {
+                loadVideos();
+                resetVideoForm();
             }
         }
         
@@ -2496,7 +2982,7 @@
             });
         }
         
-        // HOTMART CATALOG
+        // HOTMART CATALOG (ORIGINAL)
         function initHotmartCatalog() {
             document.getElementById('hotmart-continue')?.addEventListener('click', extractProductInfo);
             document.getElementById('back-to-step1')?.addEventListener('click', resetForm);
@@ -2803,7 +3289,406 @@
             document.getElementById('edit-hotmart-modal').style.display = 'flex';
         }
         
-        // FUNCIONES AUXILIARES
+        // VIDEO CATALOG (NUEVO)
+        function initVideoCatalog() {
+            // Event listeners para formulario de videos
+            document.getElementById('video-continue')?.addEventListener('click', extractVideoInfo);
+            document.getElementById('video-back-to-step1')?.addEventListener('click', resetVideoForm);
+            document.getElementById('video-submit')?.addEventListener('click', saveVideo);
+            
+            document.getElementById('video-url')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') extractVideoInfo();
+            });
+            
+            // Upload de imagen
+            document.getElementById('video-image-upload-container')?.addEventListener('click', function() {
+                document.getElementById('video-thumbnail-file').click();
+            });
+            
+            document.getElementById('video-thumbnail-file')?.addEventListener('change', handleVideoImageUpload);
+            
+            // Modal de edición
+            document.getElementById('cancel-edit-video')?.addEventListener('click', function() {
+                document.getElementById('edit-video-modal').style.display = 'none';
+            });
+            
+            document.getElementById('save-edit-video')?.addEventListener('click', updateVideo);
+            document.getElementById('delete-video-btn')?.addEventListener('click', function() {
+                if (editingVideoIndex !== -1) {
+                    const video = videos[editingVideoIndex];
+                    deleteVideoFirebase(video.id, video.title);
+                }
+            });
+            
+            // Upload de imagen en edición
+            document.getElementById('edit-video-image-upload-container')?.addEventListener('click', function() {
+                document.getElementById('edit-video-thumbnail-file').click();
+            });
+            
+            document.getElementById('edit-video-thumbnail-file')?.addEventListener('change', handleEditVideoImageUpload);
+            
+            // Modal de reproducción
+            document.getElementById('close-video-modal')?.addEventListener('click', function() {
+                document.getElementById('video-modal').style.display = 'none';
+            });
+            
+            // Filtros
+            document.getElementById('category-filter')?.addEventListener('change', function() {
+                renderVideos(this.value);
+            });
+            
+            document.getElementById('clear-filters')?.addEventListener('click', function() {
+                document.getElementById('category-filter').value = '';
+                renderVideos('');
+            });
+        }
+        
+        function initVideoTypeSelector() {
+            document.querySelectorAll('.video-type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.video-type-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentVideoType = this.getAttribute('data-type');
+                    
+                    // Actualizar placeholder según tipo
+                    const urlInput = document.getElementById('video-url');
+                    if (currentVideoType === 'youtube') {
+                        urlInput.placeholder = 'https://www.youtube.com/watch?v=ejemplo123';
+                    } else if (currentVideoType === 'vimeo') {
+                        urlInput.placeholder = 'https://vimeo.com/123456789';
+                    } else {
+                        urlInput.placeholder = 'https://tu-dominio.com/video.mp4';
+                    }
+                });
+            });
+        }
+        
+        async function loadVideos() {
+            try {
+                const snapshot = await db.collection('videos').orderBy('createdAt', 'desc').get();
+                videos = [];
+                snapshot.forEach(doc => videos.push({ id: doc.id, ...doc.data() }));
+                renderVideos();
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                showNotification('Error al cargar videos', 'error');
+            }
+        }
+        
+        function renderVideos(filterCategory = '') {
+            const container = document.getElementById('videos-container');
+            const emptyState = document.getElementById('videos-empty-state');
+            
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            let filteredVideos = videos;
+            if (filterCategory) {
+                filteredVideos = videos.filter(video => video.category === filterCategory);
+            }
+            
+            if (filteredVideos.length === 0) {
+                if (emptyState) {
+                    emptyState.style.display = 'block';
+                    emptyState.innerHTML = filterCategory 
+                        ? `<i class="fas fa-video-slash"></i>
+                           <h3>No hay videos en esta categoría</h3>
+                           <p>No se encontraron videos en la categoría "${filterCategory}".</p>`
+                        : `<i class="fas fa-video-slash"></i>
+                           <h3>No hay videos publicados aún</h3>
+                           <p>Espera a que un administrador publique videos tutoriales.</p>`;
+                }
+                return;
+            }
+            
+            if (emptyState) emptyState.style.display = 'none';
+            
+            filteredVideos.forEach((video, index) => {
+                const thumbnailSrc = video.thumbnail || getDefaultThumbnail(video.type);
+                const tagClass = video.type === 'vimeo' ? 'vimeo-tag' : (video.type === 'youtube' ? 'video-tag' : 'other-tag');
+                const tagIcon = video.type === 'youtube' ? 'fab fa-youtube' : (video.type === 'vimeo' ? 'fab fa-vimeo' : 'fas fa-video');
+                
+                const videoCard = document.createElement('div');
+                videoCard.className = 'product-card video-card';
+                videoCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${thumbnailSrc}" alt="${video.title}" class="video-thumbnail" data-index="${index}">
+                        <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            <i class="${tagIcon}"></i> ${video.type}
+                        </div>
+                        <div style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            <i class="fas fa-play"></i> Ver
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="${tagClass}">${video.category}</div>
+                        <h3>${video.title}</h3>
+                        <p>${video.description.substring(0, 100)}${video.description.length > 100 ? '...' : ''}</p>
+                        <div class="video-info">
+                            ${video.duration ? `<p><strong>Duración:</strong> ${video.duration}</p>` : ''}
+                            <p><strong>Publicado:</strong> ${new Date(video.createdAt?.toDate()).toLocaleDateString()}</p>
+                            <button class="btn btn-small watch-video-btn" data-index="${index}" style="margin-top: 10px;">
+                                <i class="fas fa-play"></i> Ver Video
+                            </button>
+                            ${isAdmin ? `
+                                <button class="btn btn-small edit-video-btn" data-index="${index}" style="margin-left: 10px;">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button class="btn btn-small delete-video-btn delete-btn" data-index="${index}" style="margin-left: 5px;">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                // Event listeners para la tarjeta
+                const watchBtn = videoCard.querySelector('.watch-video-btn');
+                const thumbnail = videoCard.querySelector('.video-thumbnail');
+                const editBtn = videoCard.querySelector('.edit-video-btn');
+                const deleteBtn = videoCard.querySelector('.delete-video-btn');
+                
+                const watchVideo = () => showVideoModal(index);
+                
+                if (watchBtn) watchBtn.addEventListener('click', watchVideo);
+                if (thumbnail) thumbnail.addEventListener('click', watchVideo);
+                
+                if (isAdmin && editBtn) {
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        editVideo(index);
+                    });
+                }
+                
+                if (isAdmin && deleteBtn) {
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteVideoFirebase(video.id, video.title);
+                    });
+                }
+                
+                container.appendChild(videoCard);
+            });
+        }
+        
+        function getDefaultThumbnail(type) {
+            const colors = {
+                youtube: '#FF0000',
+                vimeo: '#1ab7ea',
+                other: '#8a6bff'
+            };
+            const color = colors[type] || '#666';
+            return `https://via.placeholder.com/300x200/${color.replace('#', '')}/FFFFFF?text=Video+${type}`;
+        }
+        
+        async function extractVideoInfo() {
+            const url = document.getElementById('video-url')?.value.trim();
+            const loadingIndicator = document.getElementById('video-loading-indicator');
+            const errorMessage = document.getElementById('video-error-message');
+            const step1Section = document.getElementById('video-step1-section');
+            const step2Section = document.getElementById('video-step2-section');
+            
+            if (!url) {
+                showVideoError('Por favor, introduce un enlace de video');
+                return;
+            }
+            
+            if (!isValidVideoUrl(url, currentVideoType)) {
+                showVideoError('Por favor, introduce un enlace válido para el tipo seleccionado');
+                return;
+            }
+            
+            if (videos.find(video => video.url === url)) {
+                showVideoError('Este video ya ha sido publicado');
+                return;
+            }
+            
+            if (loadingIndicator) loadingIndicator.style.display = 'block';
+            if (errorMessage) errorMessage.style.display = 'none';
+            
+            try {
+                const videoInfo = await extractVideoMetadata(url, currentVideoType);
+                
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                currentVideoUrl = url;
+                
+                document.getElementById('video-title').value = videoInfo.title || '';
+                document.getElementById('video-description').value = videoInfo.description || '';
+                
+                currentVideoThumbnail = videoInfo.thumbnail;
+                if (currentVideoThumbnail) {
+                    document.getElementById('video-thumbnail-preview').innerHTML = `<img src="${currentVideoThumbnail}" alt="Vista previa">`;
+                    document.getElementById('video-thumbnail').value = currentVideoThumbnail;
+                }
+                
+                showVideoPreview(videoInfo);
+                document.getElementById('video-success-message').style.display = 'block';
+                if (step1Section) step1Section.style.display = 'none';
+                if (step2Section) step2Section.style.display = 'block';
+                
+            } catch (error) {
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                showVideoError('Error al extraer la información del video: ' + error.message);
+            }
+        }
+        
+        async function saveVideo() {
+            if (!isAdmin) {
+                showNotification('No tienes permisos para publicar videos', 'error');
+                return;
+            }
+            
+            const title = document.getElementById('video-title')?.value.trim();
+            const description = document.getElementById('video-description')?.value.trim();
+            const category = document.getElementById('video-category')?.value.trim();
+            const duration = document.getElementById('video-duration')?.value.trim();
+            
+            if (!title || !description || !category) {
+                showNotification('Por favor, completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            let thumbnailUrl = currentVideoThumbnail;
+            const fileInput = document.getElementById('video-thumbnail-file');
+            
+            try {
+                if (fileInput?.files.length > 0) {
+                    thumbnailUrl = await convertImageToDataURL(fileInput.files[0]);
+                }
+                
+                if (!thumbnailUrl) {
+                    thumbnailUrl = getDefaultThumbnail(currentVideoType);
+                }
+                
+                const embedCode = generateEmbedCode(currentVideoUrl, currentVideoType);
+                
+                const videoData = {
+                    url: currentVideoUrl,
+                    embedCode: embedCode,
+                    title: title,
+                    description: description,
+                    category: category,
+                    duration: duration || '',
+                    thumbnail: thumbnailUrl,
+                    type: currentVideoType,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdBy: currentUser.uid,
+                    createdByName: currentUser.displayName || currentUser.email
+                };
+                
+                await db.collection('videos').add(videoData);
+                
+                showNotification(`¡Video "${title}" publicado exitosamente!`, 'success');
+                resetVideoForm();
+                loadVideos();
+                
+            } catch (error) {
+                console.error('Error saving video:', error);
+                showNotification('Error al guardar el video', 'error');
+            }
+        }
+        
+        async function updateVideo() {
+            if (!isAdmin || editingVideoIndex === -1) return;
+            
+            const title = document.getElementById('edit-video-title')?.value.trim();
+            const description = document.getElementById('edit-video-description')?.value.trim();
+            const category = document.getElementById('edit-video-category')?.value.trim();
+            const duration = document.getElementById('edit-video-duration')?.value.trim();
+            const video = videos[editingVideoIndex];
+            
+            if (!title || !description || !category) {
+                showNotification('Por favor, completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            try {
+                let thumbnailUrl = video.thumbnail;
+                const fileInput = document.getElementById('edit-video-thumbnail-file');
+                
+                if (fileInput?.files.length > 0) {
+                    thumbnailUrl = await convertImageToDataURL(fileInput.files[0]);
+                }
+                
+                await db.collection('videos').doc(video.id).update({
+                    title: title,
+                    description: description,
+                    category: category,
+                    duration: duration || '',
+                    thumbnail: thumbnailUrl,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showNotification('Video actualizado exitosamente', 'success');
+                document.getElementById('edit-video-modal').style.display = 'none';
+                loadVideos();
+                editingVideoIndex = -1;
+                
+            } catch (error) {
+                console.error('Error updating video:', error);
+                showNotification('Error al actualizar el video', 'error');
+            }
+        }
+        
+        async function deleteVideoFirebase(videoId, videoTitle) {
+            if (!isAdmin) {
+                showNotification('No tienes permisos para eliminar videos', 'error');
+                return;
+            }
+            
+            if (!confirm(`¿Estás seguro de que quieres eliminar el video "${videoTitle}"?`)) {
+                return;
+            }
+            
+            try {
+                await db.collection('videos').doc(videoId).delete();
+                showNotification('Video eliminado exitosamente', 'success');
+                loadVideos();
+            } catch (error) {
+                console.error('Error deleting video:', error);
+                showNotification('Error al eliminar el video', 'error');
+            }
+        }
+        
+        function editVideo(index) {
+            if (!isAdmin) return;
+            
+            editingVideoIndex = index;
+            const video = videos[index];
+            
+            document.getElementById('edit-video-title').value = video.title;
+            document.getElementById('edit-video-description').value = video.description;
+            document.getElementById('edit-video-category').value = video.category || '';
+            document.getElementById('edit-video-duration').value = video.duration || '';
+            
+            const preview = document.getElementById('edit-video-thumbnail-preview');
+            if (video.thumbnail) {
+                preview.innerHTML = `<img src="${video.thumbnail}" alt="Vista previa">`;
+            } else {
+                preview.innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
+            }
+            
+            document.getElementById('edit-video-modal').style.display = 'flex';
+        }
+        
+        function showVideoModal(index) {
+            const video = videos[index];
+            const modal = document.getElementById('video-modal');
+            
+            document.getElementById('video-modal-title').textContent = video.title;
+            document.getElementById('video-modal-description').textContent = video.description;
+            document.getElementById('video-modal-category').textContent = video.category;
+            document.getElementById('video-modal-duration').textContent = video.duration || 'No especificada';
+            document.getElementById('video-modal-date').textContent = new Date(video.createdAt?.toDate()).toLocaleDateString();
+            
+            const playerContainer = document.getElementById('video-player-container');
+            playerContainer.innerHTML = video.embedCode || `<p>No se puede cargar el video. <a href="${video.url}" target="_blank">Ver enlace original</a></p>`;
+            
+            modal.style.display = 'flex';
+        }
+        
+        // FUNCIONES AUXILIARES PARA HOTMART
         function isValidCheckoutUrl(url) {
             const checkoutPattern = /^https?:\/\/(www\.)?pay\.hotmart\.com\/[A-Za-z0-9]+/;
             return checkoutPattern.test(url);
@@ -2833,17 +3718,92 @@
             });
         }
         
+        // FUNCIONES AUXILIARES PARA VIDEOS
+        function isValidVideoUrl(url, type) {
+            if (type === 'youtube') {
+                const patterns = [
+                    /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/,
+                    /^(https?:\/\/)?(www\.)?youtube\.com\/embed\/[\w-]+/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            } else if (type === 'vimeo') {
+                const patterns = [
+                    /^(https?:\/\/)?(www\.)?vimeo\.com\/\d+/,
+                    /^(https?:\/\/)?(www\.)?vimeo\.com\/channels\/[\w-]+\/\d+/,
+                    /^(https?:\/\/)?(www\.)?vimeo\.com\/groups\/[\w-]+\/videos\/\d+/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            } else {
+                const patterns = [
+                    /\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i,
+                    /^(https?:\/\/).+\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            }
+        }
+        
+        async function extractVideoMetadata(url, type) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const videoId = extractVideoId(url, type);
+                    let thumbnail = '';
+                    let title = '';
+                    
+                    if (type === 'youtube') {
+                        thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                        title = `Video de YouTube - ${videoId}`;
+                    } else if (type === 'vimeo') {
+                        thumbnail = `https://vumbnail.com/${videoId}.jpg`;
+                        title = `Video de Vimeo - ${videoId}`;
+                    } else {
+                        thumbnail = getDefaultThumbnail('other');
+                        title = 'Video Tutorial';
+                    }
+                    
+                    resolve({
+                        title: title,
+                        description: 'Este es un video tutorial sobre técnicas creativas. Publicado por Papelería Creativa.',
+                        thumbnail: thumbnail
+                    });
+                }, 1000);
+            });
+        }
+        
+        function extractVideoId(url, type) {
+            if (type === 'youtube') {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[7].length === 11) ? match[7] : 'demo';
+            } else if (type === 'vimeo') {
+                const regExp = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/;
+                const match = url.match(regExp);
+                return match ? match[1] : 'demo';
+            }
+            return 'demo';
+        }
+        
+        function generateEmbedCode(url, type) {
+            if (type === 'youtube') {
+                const videoId = extractVideoId(url, type);
+                return `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else if (type === 'vimeo') {
+                const videoId = extractVideoId(url, type);
+                return `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                return `<video width="100%" height="100%" controls>
+                    <source src="${url}" type="video/mp4">
+                    Tu navegador no soporta el elemento de video.
+                </video>`;
+            }
+        }
+        
+        // FUNCIONES COMPARTIDAS
         function handleImageUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
             
             if (!file.type.match('image.*')) {
                 showNotification('Por favor, selecciona solo archivos de imagen', 'error');
-                return;
-            }
-            
-            if (file.size > 2 * 1024 * 1024) {
-                showNotification('La imagen es demasiado grande. Máximo 2MB.', 'error');
                 return;
             }
             
@@ -2860,19 +3820,38 @@
             const file = e.target.files[0];
             if (!file) return;
             
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('edit-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleVideoImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
             if (!file.type.match('image.*')) {
                 showNotification('Por favor, selecciona solo archivos de imagen', 'error');
                 return;
             }
             
-            if (file.size > 2 * 1024 * 1024) {
-                showNotification('La imagen es demasiado grande. Máximo 2MB.', 'error');
-                return;
-            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentVideoThumbnail = event.target.result;
+                document.getElementById('video-thumbnail-preview').innerHTML = `<img src="${currentVideoThumbnail}" alt="Vista previa">`;
+                document.getElementById('video-thumbnail').value = currentVideoThumbnail;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleEditVideoImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
             
             const reader = new FileReader();
             reader.onload = function(event) {
-                document.getElementById('edit-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
+                document.getElementById('edit-video-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
             };
             reader.readAsDataURL(file);
         }
@@ -2914,8 +3893,36 @@
             }
         }
         
+        function showVideoPreview(videoInfo) {
+            const previewContent = document.getElementById('video-preview-content');
+            const videoPreview = document.getElementById('video-preview');
+            
+            if (previewContent) {
+                previewContent.innerHTML = `
+                    ${videoInfo.thumbnail ? `<img src="${videoInfo.thumbnail}" alt="Miniatura" class="preview-image">` : ''}
+                    <div class="preview-details">
+                        <p><strong>Título:</strong> ${videoInfo.title}</p>
+                        <p><strong>Tipo:</strong> ${currentVideoType}</p>
+                        <p><strong>Descripción:</strong> ${videoInfo.description.substring(0, 150)}...</p>
+                    </div>
+                `;
+            }
+            
+            if (videoPreview) {
+                videoPreview.style.display = 'block';
+            }
+        }
+        
         function showError(message) {
             const errorElement = document.getElementById('error-message');
+            if (errorElement) {
+                errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function showVideoError(message) {
+            const errorElement = document.getElementById('video-error-message');
             if (errorElement) {
                 errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
                 errorElement.style.display = 'block';
@@ -2945,6 +3952,31 @@
             document.getElementById('thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
             currentHotmartUrl = '';
             currentThumbnail = '';
+        }
+        
+        function resetVideoForm() {
+            const step1Section = document.getElementById('video-step1-section');
+            const step2Section = document.getElementById('video-step2-section');
+            
+            if (step1Section) step1Section.style.display = 'block';
+            if (step2Section) step2Section.style.display = 'none';
+            
+            document.getElementById('video-loading-indicator').style.display = 'none';
+            document.getElementById('video-error-message').style.display = 'none';
+            document.getElementById('video-success-message').style.display = 'none';
+            document.getElementById('video-preview').style.display = 'none';
+            
+            document.getElementById('video-url').value = '';
+            document.getElementById('video-title').value = '';
+            document.getElementById('video-description').value = '';
+            document.getElementById('video-category').value = '';
+            document.getElementById('video-duration').value = '';
+            document.getElementById('video-thumbnail').value = '';
+            document.getElementById('video-thumbnail-file').value = '';
+            
+            document.getElementById('video-thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
+            currentVideoUrl = '';
+            currentVideoThumbnail = '';
         }
         
         // FUNCIONES DE NOTIFICACIÓN
@@ -2999,7 +4031,13 @@
         window.showAuthModal = showAuthModal;
         window.handleLogout = handleLogout;
         window.editHotmartProduct = editHotmartProduct;
+        window.editVideo = editVideo;
         window.closeMobileMenu = closeMobileMenu;
+        window.filterVideos = function(category) {
+            document.getElementById('category-filter').value = category;
+            renderVideos(category);
+            switchTab('videos');
+        };
         
         // ESTILOS ADICIONALES
         const style = document.createElement('style');
@@ -3011,94 +4049,6 @@
             @keyframes slideOut {
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
-            }
-            
-            .plans-grid, .courses-grid, .videos-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 30px;
-                margin-top: 30px;
-            }
-            
-            .plan-card, .course-card, .video-card {
-                background-color: white;
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-                transition: transform 0.3s, box-shadow 0.3s;
-            }
-            
-            .plan-card:hover, .course-card:hover, .video-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            }
-            
-            .plan-header, .course-header, .video-header {
-                background: linear-gradient(135deg, var(--primary), var(--secondary));
-                color: white;
-                padding: 20px;
-                text-align: center;
-            }
-            
-            .plan-header h3, .course-header h3, .video-header h3 {
-                font-size: 24px;
-                margin-bottom: 5px;
-            }
-            
-            .plan-price {
-                font-size: 32px;
-                font-weight: 700;
-                margin: 15px 0;
-            }
-            
-            .plan-features, .course-features, .video-info {
-                padding: 20px;
-            }
-            
-            .plan-features ul, .course-features ul {
-                list-style: none;
-                margin-bottom: 20px;
-            }
-            
-            .plan-features li, .course-features li {
-                padding: 8px 0;
-                border-bottom: 1px solid #eee;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            
-            .plan-features li i, .course-features li i {
-                color: var(--primary);
-            }
-            
-            .course-duration, .video-duration {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                color: #666;
-                margin-bottom: 15px;
-            }
-            
-            .course-duration i, .video-duration i {
-                color: var(--primary);
-            }
-            
-            .video-thumbnail {
-                width: 100%;
-                height: 160px;
-                background-color: #f5f5f5;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--primary);
-                font-size: 40px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
-            
-            .video-thumbnail:hover {
-                background-color: #e9e9e9;
             }
             
             .notification {
@@ -3121,15 +4071,12 @@
             .notification.error {
                 background-color: var(--error);
             }
-            
-            .notification.warning {
-                background-color: var(--warning);
-            }
         `;
         document.head.appendChild(style);
     </script>
 </body>
 </html>
+
 
 
 
