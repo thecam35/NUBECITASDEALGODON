@@ -1530,79 +1530,7 @@
             color: var(--dark);
         }
         
-        /* PLANES Y CURSOS (ORIGINALES) */
-        .plans-grid, .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .plan-card, .course-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .plan-card:hover, .course-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .plan-header, .course-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .plan-header h3, .course-header h3 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        
-        .plan-price {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 15px 0;
-        }
-        
-        .plan-features, .course-features {
-            padding: 20px;
-        }
-        
-        .plan-features ul, .course-features ul {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-        
-        .plan-features li, .course-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .plan-features li i, .course-features li i {
-            color: var(--primary);
-        }
-        
-        .course-duration {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .course-duration i {
-            color: var(--primary);
-        }
-        
-        /* ESTILOS PARA PLANTILLAS GRATIS */
+        /* SECCIÓN DE PLANTILLAS GRATIS */
         .templates-admin-section {
             background-color: white;
             border-radius: 10px;
@@ -2014,12 +1942,6 @@
                 <div class="mobile-tab" data-tab="editor" onclick="switchTab('editor'); closeMobileMenu();">
                     <i class="fas fa-edit"></i> Editor
                 </div>
-                <div class="mobile-tab" data-tab="planes" onclick="switchTab('planes'); closeMobileMenu();">
-                    <i class="fas fa-crown"></i> Planes
-                </div>
-                <div class="mobile-tab" data-tab="cursos" onclick="switchTab('cursos'); closeMobileMenu();">
-                    <i class="fas fa-graduation-cap"></i> Cursos
-                </div>
                 <div class="mobile-tab" data-tab="videos" onclick="switchTab('videos'); closeMobileMenu();">
                     <i class="fas fa-play-circle"></i> Videos
                 </div>
@@ -2045,16 +1967,9 @@
                     <div class="tab" data-tab="editor">
                         <i class="fas fa-edit"></i> Editor
                     </div>
-                    <div class="tab" data-tab="planes">
-                        <i class="fas fa-crown"></i> Planes
-                    </div>
-                    <div class="tab" data-tab="cursos">
-                        <i class="fas fa-graduation-cap"></i> Cursos
-                    </div>
                     <div class="tab" data-tab="videos">
                         <i class="fas fa-play-circle"></i> Videos
                     </div>
-                    <!-- NUEVA PESTAÑA -->
                     <div class="tab" data-tab="plantillas-gratis">
                         <i class="fas fa-file-download"></i> Plantillas Gratis
                     </div>
@@ -2070,7 +1985,7 @@
                 <h2>Desata tu creatividad con nuestros productos</h2>
                 <p>Encuentra todo lo que necesitas para tus proyectos creativos: papelería, materiales, herramientas y mucho más. Inspírate y crea algo extraordinario.</p>
                 <a href="#catalogo" class="btn" onclick="switchTab('catalogo')">Explorar Catálogo</a>
-                <a href="#cursos" class="btn btn-primary" onclick="switchTab('cursos')">Ver Cursos</a>
+                <a href="#plantillas-gratis" class="btn btn-primary" onclick="switchTab('plantillas-gratis')">Ver Plantillas Gratis</a>
             </div>
             
             <div class="section-title">
@@ -2267,144 +2182,7 @@
             </div>
         </div>
 
-        <!-- PLANES -->
-        <div class="tab-content" id="planes">
-            <div class="section-title">
-                <h2>Nuestros Planes</h2>
-                <p>Elige el plan perfecto para tus necesidades creativas</p>
-            </div>
-            
-            <div class="plans-grid">
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Básico</h3>
-                        <p>Perfecto para empezar</p>
-                        <div class="plan-price">Gratis</div>
-                    </div>
-                    <div class="plan-features">
-                        <ul>
-                            <li><i class="fas fa-check"></i> 5 plantillas básicas</li>
-                            <li><i class="fas fa-check"></i> Editor básico</li>
-                            <li><i class="fas fa-check"></i> 3 productos en catálogo</li>
-                            <li><i class="fas fa-check"></i> Descargas en PNG</li>
-                            <li><i class="fas fa-times"></i> Sin cursos premium</li>
-                            <li><i class="fas fa-times"></i> Sin soporte prioritario</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width: 100%;">Comenzar Gratis</button>
-                    </div>
-                </div>
-                
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Pro</h3>
-                        <p>Para creadores serios</p>
-                        <div class="plan-price">$9.99/mes</div>
-                    </div>
-                    <div class="plan-features">
-                        <ul>
-                            <li><i class="fas fa-check"></i> 50+ plantillas premium</li>
-                            <li><i class="fas fa-check"></i> Editor completo</li>
-                            <li><i class="fas fa-check"></i> Productos ilimitados</li>
-                            <li><i class="fas fa-check"></i> Descargas PNG, JPG, PDF</li>
-                            <li><i class="fas fa-check"></i> 5 cursos premium</li>
-                            <li><i class="fas fa-check"></i> Soporte prioritario</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width: 100%;">Elegir Plan Pro</button>
-                    </div>
-                </div>
-                
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Empresa</h3>
-                        <p>Para equipos creativos</p>
-                        <div class="plan-price">$29.99/mes</div>
-                    </div>
-                    <div class="plan-features">
-                        <ul>
-                            <li><i class="fas fa-check"></i> Todo lo del plan Pro</li>
-                            <li><i class="fas fa-check"></i> Hasta 5 usuarios</li>
-                            <li><i class="fas fa-check"></i> Plantillas personalizadas</li>
-                            <li><i class="fas fa-check"></i> Branding personalizado</li>
-                            <li><i class="fas fa-check"></i> Todos los cursos</li>
-                            <li><i class="fas fa-check"></i> Soporte 24/7</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width: 100%;">Contactar Ventas</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CURSOS -->
-        <div class="tab-content" id="cursos">
-            <div class="section-title">
-                <h2>Cursos Creativos</h2>
-                <p>Aprende nuevas habilidades y técnicas creativas</p>
-            </div>
-            
-            <div class="courses-grid">
-                <div class="course-card">
-                    <div class="course-header">
-                        <h3>Lettering Moderno</h3>
-                        <p>De principiante a experto</p>
-                    </div>
-                    <div class="course-features">
-                        <div class="course-duration">
-                            <i class="fas fa-clock"></i>
-                            <span>8 horas de contenido</span>
-                        </div>
-                        <ul>
-                            <li><i class="fas fa-check"></i> Fundamentos del lettering</li>
-                            <li><i class="fas fa-check"></i> 5 estilos diferentes</li>
-                            <li><i class="fas fa-check"></i> Proyectos prácticos</li>
-                            <li><i class="fas fa-check"></i> Certificado de finalización</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width: 100%;">Inscribirse - $49</button>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-header">
-                        <h3>Diseño Digital</h3>
-                        <p>Con Canva y herramientas gratis</p>
-                    </div>
-                    <div class="course-features">
-                        <div class="course-duration">
-                            <i class="fas fa-clock"></i>
-                            <span>12 horas de contenido</span>
-                        </div>
-                        <ul>
-                            <li><i class="fas fa-check"></i> Canva desde cero</li>
-                            <li><i class="fas fa-check"></i> Diseño para redes sociales</li>
-                            <li><i class="fas fa-check"></i> Creación de logotipos</li>
-                            <li><i class="fas fa-check"></i> Portafolio completo</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width: 100%;">Inscribirse - $69</button>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-header">
-                        <h3>Ventas Digitales</h3>
-                        <p>Monetiza tu creatividad</p>
-                    </div>
-                    <div class="course-features">
-                        <div class="course-duration">
-                            <i class="fas fa-clock"></i>
-                            <span>10 horas de contenido</span>
-                        </div>
-                        <ul>
-                            <li><i class="fas fa-check"></i> Productos digitales</li>
-                            <li><i class="fas fa-check"></i> Hotmart desde cero</li>
-                            <li><i class="fas fa-check"></i> Estrategias de marketing</li>
-                            <li><i class="fas fa-check"></i> Casos de éxito</li>
-                        </ul>
-                        <button class="btn btn-primary" style="width: 100%;">Inscribirse - $59</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VIDEOS (NUEVA SECCIÓN) -->
+        <!-- VIDEOS -->
         <div class="tab-content" id="videos">
             <!-- SECCIÓN DE ADMINISTRADOR -->
             <div id="admin-videos-section" style="display: none;">
@@ -2571,7 +2349,7 @@
             </div>
         </div>
 
-        <!-- PLANTILLAS GRATIS (NUEVA SECCIÓN) -->
+        <!-- PLANTILLAS GRATIS -->
         <div class="tab-content" id="plantillas-gratis">
             <!-- SECCIÓN DE ADMINISTRADOR -->
             <div id="admin-templates-section" style="display: none;">
@@ -2727,7 +2505,7 @@
                     <option value="Invitaciones">Invitaciones</option>
                     <option value="Flyers">Flyers</option>
                     <option value="Social Media">Social Media</option>
-                    <option value="Presentaciones">Presentaciones</option>
+                                    <option value="Presentaciones">Presentaciones</option>
                     <option value="Documentos">Documentos</option>
                     <option value="Otros">Otros</option>
                 </select>
@@ -2806,7 +2584,7 @@
                     <option value="Invitaciones">Invitaciones</option>
                     <option value="Flyers">Flyers</option>
                     <option value="Social Media">Social Media</option>
-                    <option value="Presentaciones">Presentaciones</option>
+                                    <option value="Presentaciones">Presentaciones</option>
                     <option value="Documentos">Documentos</option>
                     <option value="Otros">Otros</option>
                 </select>
@@ -3008,8 +2786,6 @@
                         <li><a href="#" onclick="switchTab('inicio')">Inicio</a></li>
                         <li><a href="#" onclick="switchTab('catalogo')">Catálogo</a></li>
                         <li><a href="#" onclick="switchTab('editor')">Editor</a></li>
-                        <li><a href="#" onclick="switchTab('planes')">Planes</a></li>
-                        <li><a href="#" onclick="switchTab('cursos')">Cursos</a></li>
                         <li><a href="#" onclick="switchTab('videos')">Videos</a></li>
                         <li><a href="#" onclick="switchTab('plantillas-gratis')">Plantillas Gratis</a></li>
                     </ul>
@@ -4130,7 +3906,7 @@
             modal.style.display = 'flex';
         }
         
-        // PLANTILLAS GRATIS (NUEVA SECCIÓN)
+        // PLANTILLAS GRATIS
         function initTemplateCatalog() {
             document.getElementById('template-continue')?.addEventListener('click', verifyTemplateUrl);
             document.getElementById('template-back-to-step1')?.addEventListener('click', resetTemplateForm);
@@ -4996,6 +4772,7 @@
     </script>
 </body>
 </html>
+
 
 
 
