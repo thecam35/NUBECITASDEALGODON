@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papelería Creativa - Videos</title>
+    <title>Papelería Creativa - Plantillas Gratis</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -33,6 +33,8 @@
             --success: #4CAF50;
             --warning: #ff9800;
             --error: #f44336;
+            --google: #4285F4;
+            --canva: #00C4CC;
         }
         
         body {
@@ -620,7 +622,7 @@
         }
         
         /* MODALES */
-        .templates-modal, .modal, .auth-modal, .edit-hotmart-modal, .edit-video-modal, .video-modal {
+        .templates-modal, .modal, .auth-modal, .edit-hotmart-modal, .edit-video-modal, .video-modal, .edit-template-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -633,7 +635,7 @@
             align-items: center;
         }
         
-        .templates-content, .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content {
+        .templates-content, .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content, .edit-template-content {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
@@ -643,11 +645,11 @@
             overflow-y: auto;
         }
         
-        .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content {
+        .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content, .edit-template-content {
             max-width: 500px;
         }
         
-        .edit-hotmart-content, .edit-video-content {
+        .edit-hotmart-content, .edit-video-content, .edit-template-content {
             max-width: 600px;
         }
         
@@ -1600,6 +1602,215 @@
             color: var(--primary);
         }
         
+        /* ESTILOS PARA PLANTILLAS GRATIS */
+        .templates-admin-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .template-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .template-type-btn {
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .template-type-btn.active {
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .template-type-btn.google.active {
+            background-color: var(--google);
+            border-color: var(--google);
+        }
+        
+        .template-type-btn.canva.active {
+            background-color: var(--canva);
+            border-color: var(--canva);
+        }
+        
+        .template-type-btn.other.active {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .templates-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .templates-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .templates-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .templates-help {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .templates-help ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            list-style: none;
+        }
+        
+        .templates-help li {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .templates-help li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+        
+        .template-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .template-thumbnail:hover {
+            transform: scale(1.02);
+        }
+        
+        .template-info {
+            padding: 15px;
+        }
+        
+        .template-info h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .template-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .template-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .template-link-btn:hover {
+            background-color: #ff5a7d;
+        }
+        
+        .templates-empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .templates-empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .templates-empty-state h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .template-card {
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .template-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .template-tag {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .google-tag {
+            background-color: var(--google);
+        }
+        
+        .canva-tag {
+            background-color: var(--canva);
+        }
+        
+        .other-template-tag {
+            background-color: var(--secondary);
+        }
+        
+        .template-preview {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .template-preview h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .hamburger-btn {
@@ -1668,17 +1879,21 @@
                 flex: 1;
             }
             
-            .canva-form, .videos-form {
+            .canva-form, .videos-form, .templates-form {
                 flex-direction: column;
             }
             
-            .canva-input, .videos-input {
+            .canva-input, .videos-input, .templates-input {
                 min-width: 100%;
             }
             
             .form-row {
                 flex-direction: column;
                 gap: 10px;
+            }
+            
+            .template-type-selector {
+                justify-content: center;
             }
         }
         
@@ -1704,7 +1919,7 @@
                 font-size: 12px;
             }
             
-            .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content {
+            .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content, .edit-template-content {
                 padding: 20px;
                 width: 95%;
             }
@@ -1808,6 +2023,9 @@
                 <div class="mobile-tab" data-tab="videos" onclick="switchTab('videos'); closeMobileMenu();">
                     <i class="fas fa-play-circle"></i> Videos
                 </div>
+                <div class="mobile-tab" data-tab="plantillas-gratis" onclick="switchTab('plantillas-gratis'); closeMobileMenu();">
+                    <i class="fas fa-file-download"></i> Plantillas Gratis
+                </div>
             </div>
         </div>
         
@@ -1835,6 +2053,10 @@
                     </div>
                     <div class="tab" data-tab="videos">
                         <i class="fas fa-play-circle"></i> Videos
+                    </div>
+                    <!-- NUEVA PESTAÑA -->
+                    <div class="tab" data-tab="plantillas-gratis">
+                        <i class="fas fa-file-download"></i> Plantillas Gratis
                     </div>
                 </div>
             </div>
@@ -1881,12 +2103,12 @@
                 
                 <div class="product-card">
                     <div class="product-img">
-                        <i class="fas fa-graduation-cap"></i>
+                        <i class="fas fa-file-download"></i>
                     </div>
                     <div class="product-info">
-                        <h3>Videos Tutoriales</h3>
-                        <p>Aprende nuevas técnicas con nuestra colección de videos tutoriales. Desde lettering hasta diseño digital paso a paso.</p>
-                        <button class="btn btn-small" onclick="switchTab('videos')">Ver Videos</button>
+                        <h3>Plantillas Gratis</h3>
+                        <p>Descarga nuestras plantillas gratuitas para tus proyectos creativos. Diseños profesionales listos para usar y personalizar.</p>
+                        <button class="btn btn-small" onclick="switchTab('plantillas-gratis')">Ver Plantillas</button>
                     </div>
                 </div>
             </div>
@@ -2038,8 +2260,8 @@
                     <button class="btn" onclick="switchTab('catalogo')">
                         <i class="fas fa-shopping-cart"></i> Ver Catálogo
                     </button>
-                    <button class="btn btn-primary" onclick="switchTab('videos')" style="margin-left: 10px;">
-                        <i class="fas fa-play-circle"></i> Ver Videos
+                    <button class="btn btn-primary" onclick="switchTab('plantillas-gratis')" style="margin-left: 10px;">
+                        <i class="fas fa-file-download"></i> Plantillas Gratis
                     </button>
                 </div>
             </div>
@@ -2348,6 +2570,182 @@
                 </div>
             </div>
         </div>
+
+        <!-- PLANTILLAS GRATIS (NUEVA SECCIÓN) -->
+        <div class="tab-content" id="plantillas-gratis">
+            <!-- SECCIÓN DE ADMINISTRADOR -->
+            <div id="admin-templates-section" style="display: none;">
+                <div class="section-title">
+                    <h2>Gestión de Plantillas Gratis</h2>
+                    <p>Publica y gestiona tus plantillas gratuitas para la comunidad</p>
+                </div>
+                
+                <div class="templates-admin-section" id="template-step1-section">
+                    <h3 style="margin-bottom: 20px;">Paso 1: Ingresa el enlace de tu plantilla</h3>
+                    <p style="margin-bottom: 20px; color: #666;">Soporta enlaces de Google Drive, Canva y otros servicios</p>
+                    
+                    <div class="template-type-selector">
+                        <div class="template-type-btn google active" data-type="google">
+                            <i class="fab fa-google-drive"></i> Google Drive
+                        </div>
+                        <div class="template-type-btn canva" data-type="canva">
+                            <i class="fab fa-canva"></i> Canva
+                        </div>
+                        <div class="template-type-btn other" data-type="other">
+                            <i class="fas fa-link"></i> Otro Enlace
+                        </div>
+                    </div>
+                    
+                    <div class="templates-form">
+                        <input type="url" class="templates-input" id="template-url" placeholder="https://drive.google.com/file/d/.../view?usp=sharing">
+                        <button class="btn btn-primary" id="template-continue">
+                            <i class="fas fa-arrow-right"></i> Continuar
+                        </button>
+                    </div>
+                    
+                    <div class="loading-indicator" id="template-loading-indicator">
+                        <div class="loading-spinner"></div>
+                        <p>Verificando enlace de plantilla...</p>
+                    </div>
+                    
+                    <div class="error-message" id="template-error-message"></div>
+                    
+                    <div class="url-example" id="template-url-example">
+                        <strong>Ejemplos válidos:</strong><br>
+                        Google Drive: https://drive.google.com/file/d/.../view?usp=sharing<br>
+                        Canva: https://www.canva.com/design/.../view<br>
+                        Otros: https://tu-dominio.com/plantilla.pdf
+                    </div>
+                    
+                    <div class="templates-help">
+                        <strong>¿Qué hace el sistema?</strong>
+                        <ul>
+                            <li>Verifica que el enlace sea accesible públicamente</li>
+                            <li>Permite subir una imagen de portada personalizada</li>
+                            <li>Puedes agregar título y descripción</li>
+                            <li>Las plantillas aparecerán en la sección pública</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="templates-admin-section" id="template-step2-section" style="display: none;">
+                    <h3 style="margin-bottom: 20px;">Paso 2: Completa la información de la plantilla</h3>
+                    <p style="margin-bottom: 20px; color: #666;">Agrega detalles sobre tu plantilla gratuita</p>
+                    
+                    <div class="success-message" id="template-success-message">
+                        <i class="fas fa-check-circle"></i> ¡Enlace de plantilla verificado!
+                    </div>
+                    
+                    <div class="template-preview" id="template-preview">
+                        <h4>Vista previa de la plantilla:</h4>
+                        <div id="template-preview-content"></div>
+                    </div>
+                    
+                    <div class="product-form">
+                        <div class="control-group">
+                            <label for="template-title">Título de la Plantilla *</label>
+                            <input type="text" id="template-title" class="templates-input" placeholder="Ej: Planner Semanal Gratis" required>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="template-description">Descripción *</label>
+                            <textarea id="template-description" class="templates-input" rows="4" placeholder="Describe tu plantilla y cómo usarla..." required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="control-group">
+                                <label for="template-category">Categoría *</label>
+                                <select id="template-category" class="templates-input" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="Planners">Planners</option>
+                                    <option value="Calendarios">Calendarios</option>
+                                    <option value="Tarjetas">Tarjetas</option>
+                                    <option value="Invitaciones">Invitaciones</option>
+                                    <option value="Flyers">Flyers</option>
+                                    <option value="Social Media">Social Media</option>
+                                    <option value="Presentaciones">Presentaciones</option>
+                                    <option value="Documentos">Documentos</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="template-format">Formato (opcional)</label>
+                                <select id="template-format" class="templates-input">
+                                    <option value="">Seleccionar formato</option>
+                                    <option value="PDF">PDF</option>
+                                    <option value="JPG">JPG</option>
+                                    <option value="PNG">PNG</option>
+                                    <option value="PPT">PowerPoint</option>
+                                    <option value="DOC">Word</option>
+                                    <option value="Canva Template">Plantilla Canva</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="template-thumbnail">Imagen de Portada *</label>
+                            <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Sube una imagen que muestre cómo se ve la plantilla:</p>
+                            <div class="image-upload-container" id="template-image-upload-container">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Haz clic para subir una imagen de portada</p>
+                                <p><small>Tamaño recomendado: 300x200px</small></p>
+                            </div>
+                            <input type="file" id="template-thumbnail-file" accept="image/*" style="display: none;">
+                            <input type="hidden" id="template-thumbnail" value="">
+                            <div class="thumbnail-preview" id="template-thumbnail-preview">
+                                <i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn" id="template-back-to-step1">
+                                <i class="fas fa-arrow-left"></i> Atrás
+                            </button>
+                            <button class="btn btn-primary" id="template-submit">
+                                <i class="fas fa-check"></i> Publicar Plantilla
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECCIÓN PÚBLICA -->
+            <div class="section-title" id="public-templates-title">
+                <h2>Plantillas Gratis</h2>
+                <p>Descarga nuestras plantillas gratuitas para tus proyectos creativos</p>
+            </div>
+            
+            <!-- Filtros -->
+            <div style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
+                <select id="template-category-filter" class="templates-input" style="width: auto; min-width: 200px;">
+                    <option value="">Todas las categorías</option>
+                    <option value="Planners">Planners</option>
+                    <option value="Calendarios">Calendarios</option>
+                    <option value="Tarjetas">Tarjetas</option>
+                    <option value="Invitaciones">Invitaciones</option>
+                    <option value="Flyers">Flyers</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Presentaciones">Presentaciones</option>
+                    <option value="Documentos">Documentos</option>
+                    <option value="Otros">Otros</option>
+                </select>
+                
+                <button class="btn" id="clear-template-filters">
+                    <i class="fas fa-filter"></i> Limpiar filtros
+                </button>
+            </div>
+            
+            <!-- Grid de Plantillas -->
+            <div class="catalog-grid" id="templates-container">
+                <div id="templates-empty-state" class="templates-empty-state">
+                    <i class="fas fa-file-download"></i>
+                    <h3>No hay plantillas publicadas aún</h3>
+                    <p>Espera a que un administrador publique plantillas gratuitas.</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- MODAL DE AUTENTICACIÓN -->
@@ -2383,40 +2781,69 @@
         </div>
     </div>
 
-    <!-- MODAL DE PLANTILLAS -->
-    <div class="templates-modal" id="templates-modal">
-        <div class="templates-content">
-            <h3>Selecciona una plantilla</h3>
-            <p>Elige una de nuestras plantillas editables para comenzar</p>
+    <!-- MODAL DE EDICIÓN DE PLANTILLA -->
+    <div class="edit-template-modal" id="edit-template-modal">
+        <div class="edit-template-content">
+            <h3>Editar Plantilla</h3>
             
-            <div class="templates-grid" id="templates-grid"></div>
-            
-            <div class="modal-actions">
-                <button class="btn" id="cancel-templates">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE DESCARGA -->
-    <div class="modal" id="download-modal">
-        <div class="modal-content">
-            <h3>Descargar Diseño</h3>
-            <p>Selecciona el formato de descarga:</p>
-            
-            <div class="format-options">
-                <div class="format-option selected" data-format="png">PNG</div>
-                <div class="format-option" data-format="jpg">JPG</div>
-                <div class="format-option" data-format="pdf">PDF</div>
+            <div class="control-group">
+                <label for="edit-template-title">Título de la Plantilla:</label>
+                <input type="text" id="edit-template-title" class="templates-input" placeholder="Título de la plantilla">
             </div>
             
             <div class="control-group">
-                <label for="filename-input">Nombre del archivo:</label>
-                <input type="text" id="filename-input" value="mi_diseño" placeholder="Nombre del archivo">
+                <label for="edit-template-description">Descripción:</label>
+                <textarea id="edit-template-description" class="templates-input" rows="4" placeholder="Descripción de la plantilla"></textarea>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-category">Categoría:</label>
+                <select id="edit-template-category" class="templates-input">
+                    <option value="">Seleccionar categoría</option>
+                    <option value="Planners">Planners</option>
+                    <option value="Calendarios">Calendarios</option>
+                    <option value="Tarjetas">Tarjetas</option>
+                    <option value="Invitaciones">Invitaciones</option>
+                    <option value="Flyers">Flyers</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Presentaciones">Presentaciones</option>
+                    <option value="Documentos">Documentos</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-format">Formato:</label>
+                <select id="edit-template-format" class="templates-input">
+                    <option value="">Seleccionar formato</option>
+                    <option value="PDF">PDF</option>
+                    <option value="JPG">JPG</option>
+                    <option value="PNG">PNG</option>
+                    <option value="PPT">PowerPoint</option>
+                    <option value="DOC">Word</option>
+                    <option value="Canva Template">Plantilla Canva</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-thumbnail">Portada:</label>
+                <div class="image-upload-container" id="edit-template-image-upload-container">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Haz clic para cambiar la portada</p>
+                </div>
+                <input type="file" id="edit-template-thumbnail-file" accept="image/*" style="display: none;">
+                <div class="thumbnail-preview" id="edit-template-thumbnail-preview">
+                    <i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>
+                </div>
             </div>
             
             <div class="modal-actions">
-                <button class="btn" id="cancel-download">Cancelar</button>
-                <button class="btn btn-primary" id="confirm-download">Descargar</button>
+                <button class="btn" id="cancel-edit-template">Cancelar</button>
+                <button class="btn delete-btn" id="delete-template-btn">
+                    <i class="fas fa-trash"></i> Eliminar Plantilla
+                </button>
+                <button class="btn btn-primary" id="save-edit-template">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -2584,6 +3011,7 @@
                         <li><a href="#" onclick="switchTab('planes')">Planes</a></li>
                         <li><a href="#" onclick="switchTab('cursos')">Cursos</a></li>
                         <li><a href="#" onclick="switchTab('videos')">Videos</a></li>
+                        <li><a href="#" onclick="switchTab('plantillas-gratis')">Plantillas Gratis</a></li>
                     </ul>
                 </div>
                 
@@ -2591,7 +3019,7 @@
                     <h3>Recursos</h3>
                     <ul>
                         <li><a href="#">Blog Creativo</a></li>
-                        <li><a href="#">Plantillas Gratis</a></li>
+                        <li><a href="#" onclick="switchTab('plantillas-gratis')">Plantillas Gratis</a></li>
                         <li><a href="#">Guías de Diseño</a></li>
                         <li><a href="#">Comunidad</a></li>
                         <li><a href="#">Soporte Técnico</a></li>
@@ -2637,13 +3065,18 @@
         let isAdmin = false;
         let hotmartProducts = [];
         let videos = [];
+        let templates = [];
         let editingHotmartIndex = -1;
         let editingVideoIndex = -1;
+        let editingTemplateIndex = -1;
         let currentHotmartUrl = '';
         let currentThumbnail = '';
         let currentVideoUrl = '';
         let currentVideoThumbnail = '';
         let currentVideoType = 'youtube';
+        let currentTemplateUrl = '';
+        let currentTemplateThumbnail = '';
+        let currentTemplateType = 'google';
         
         // INICIALIZAR TODO
         document.addEventListener('DOMContentLoaded', function() {
@@ -2652,7 +3085,9 @@
             initTabs();
             initHotmartCatalog();
             initVideoCatalog();
+            initTemplateCatalog();
             initVideoTypeSelector();
+            initTemplateTypeSelector();
             initSearch();
         });
         
@@ -2699,10 +3134,12 @@
                     updateUIForUser(user, isAdmin);
                     loadHotmartProducts();
                     loadVideos();
+                    loadTemplates();
                 } else {
                     updateUIForGuest();
                     loadHotmartProducts();
                     loadVideos();
+                    loadTemplates();
                 }
             });
             
@@ -2767,6 +3204,11 @@
             if (adminVideosSection) {
                 adminVideosSection.style.display = adminStatus ? 'block' : 'none';
             }
+            
+            const adminTemplatesSection = document.getElementById('admin-templates-section');
+            if (adminTemplatesSection) {
+                adminTemplatesSection.style.display = adminStatus ? 'block' : 'none';
+            }
         }
         
         function updateUIForGuest() {
@@ -2813,6 +3255,11 @@
             const adminVideosSection = document.getElementById('admin-videos-section');
             if (adminVideosSection) {
                 adminVideosSection.style.display = 'none';
+            }
+            
+            const adminTemplatesSection = document.getElementById('admin-templates-section');
+            if (adminTemplatesSection) {
+                adminTemplatesSection.style.display = 'none';
             }
         }
         
@@ -2930,6 +3377,9 @@
             } else if (tabName === 'videos') {
                 loadVideos();
                 resetVideoForm();
+            } else if (tabName === 'plantillas-gratis') {
+                loadTemplates();
+                resetTemplateForm();
             }
         }
         
@@ -2982,7 +3432,7 @@
             });
         }
         
-        // HOTMART CATALOG (ORIGINAL)
+        // HOTMART CATALOG
         function initHotmartCatalog() {
             document.getElementById('hotmart-continue')?.addEventListener('click', extractProductInfo);
             document.getElementById('back-to-step1')?.addEventListener('click', resetForm);
@@ -3289,9 +3739,8 @@
             document.getElementById('edit-hotmart-modal').style.display = 'flex';
         }
         
-        // VIDEO CATALOG (NUEVO)
+        // VIDEO CATALOG
         function initVideoCatalog() {
-            // Event listeners para formulario de videos
             document.getElementById('video-continue')?.addEventListener('click', extractVideoInfo);
             document.getElementById('video-back-to-step1')?.addEventListener('click', resetVideoForm);
             document.getElementById('video-submit')?.addEventListener('click', saveVideo);
@@ -3300,14 +3749,12 @@
                 if (e.key === 'Enter') extractVideoInfo();
             });
             
-            // Upload de imagen
             document.getElementById('video-image-upload-container')?.addEventListener('click', function() {
                 document.getElementById('video-thumbnail-file').click();
             });
             
             document.getElementById('video-thumbnail-file')?.addEventListener('change', handleVideoImageUpload);
             
-            // Modal de edición
             document.getElementById('cancel-edit-video')?.addEventListener('click', function() {
                 document.getElementById('edit-video-modal').style.display = 'none';
             });
@@ -3320,19 +3767,16 @@
                 }
             });
             
-            // Upload de imagen en edición
             document.getElementById('edit-video-image-upload-container')?.addEventListener('click', function() {
                 document.getElementById('edit-video-thumbnail-file').click();
             });
             
             document.getElementById('edit-video-thumbnail-file')?.addEventListener('change', handleEditVideoImageUpload);
             
-            // Modal de reproducción
             document.getElementById('close-video-modal')?.addEventListener('click', function() {
                 document.getElementById('video-modal').style.display = 'none';
             });
             
-            // Filtros
             document.getElementById('category-filter')?.addEventListener('change', function() {
                 renderVideos(this.value);
             });
@@ -3350,7 +3794,6 @@
                     this.classList.add('active');
                     currentVideoType = this.getAttribute('data-type');
                     
-                    // Actualizar placeholder según tipo
                     const urlInput = document.getElementById('video-url');
                     if (currentVideoType === 'youtube') {
                         urlInput.placeholder = 'https://www.youtube.com/watch?v=ejemplo123';
@@ -3443,7 +3886,6 @@
                     </div>
                 `;
                 
-                // Event listeners para la tarjeta
                 const watchBtn = videoCard.querySelector('.watch-video-btn');
                 const thumbnail = videoCard.querySelector('.video-thumbnail');
                 const editBtn = videoCard.querySelector('.edit-video-btn');
@@ -3688,6 +4130,659 @@
             modal.style.display = 'flex';
         }
         
+        // PLANTILLAS GRATIS (NUEVA SECCIÓN)
+        function initTemplateCatalog() {
+            document.getElementById('template-continue')?.addEventListener('click', verifyTemplateUrl);
+            document.getElementById('template-back-to-step1')?.addEventListener('click', resetTemplateForm);
+            document.getElementById('template-submit')?.addEventListener('click', saveTemplate);
+            
+            document.getElementById('template-url')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') verifyTemplateUrl();
+            });
+            
+            document.getElementById('template-image-upload-container')?.addEventListener('click', function() {
+                document.getElementById('template-thumbnail-file').click();
+            });
+            
+            document.getElementById('template-thumbnail-file')?.addEventListener('change', handleTemplateImageUpload);
+            
+            document.getElementById('cancel-edit-template')?.addEventListener('click', function() {
+                document.getElementById('edit-template-modal').style.display = 'none';
+            });
+            
+            document.getElementById('save-edit-template')?.addEventListener('click', updateTemplate);
+            document.getElementById('delete-template-btn')?.addEventListener('click', function() {
+                if (editingTemplateIndex !== -1) {
+                    const template = templates[editingTemplateIndex];
+                    deleteTemplateFirebase(template.id, template.title);
+                }
+            });
+            
+            document.getElementById('edit-template-image-upload-container')?.addEventListener('click', function() {
+                document.getElementById('edit-template-thumbnail-file').click();
+            });
+            
+            document.getElementById('edit-template-thumbnail-file')?.addEventListener('change', handleEditTemplateImageUpload);
+            
+            document.getElementById('template-category-filter')?.addEventListener('change', function() {
+                renderTemplates(this.value);
+            });
+            
+            document.getElementById('clear-template-filters')?.addEventListener('click', function() {
+                document.getElementById('template-category-filter').value = '';
+                renderTemplates('');
+            });
+        }
+        
+        function initTemplateTypeSelector() {
+            document.querySelectorAll('.template-type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.template-type-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentTemplateType = this.getAttribute('data-type');
+                    
+                    const urlInput = document.getElementById('template-url');
+                    if (currentTemplateType === 'google') {
+                        urlInput.placeholder = 'https://drive.google.com/file/d/.../view?usp=sharing';
+                    } else if (currentTemplateType === 'canva') {
+                        urlInput.placeholder = 'https://www.canva.com/design/.../view';
+                    } else {
+                        urlInput.placeholder = 'https://tu-dominio.com/plantilla.pdf';
+                    }
+                });
+            });
+        }
+        
+        async function loadTemplates() {
+            try {
+                const snapshot = await db.collection('templates').orderBy('createdAt', 'desc').get();
+                templates = [];
+                snapshot.forEach(doc => templates.push({ id: doc.id, ...doc.data() }));
+                renderTemplates();
+            } catch (error) {
+                console.error('Error loading templates:', error);
+                showNotification('Error al cargar plantillas', 'error');
+            }
+        }
+        
+        function renderTemplates(filterCategory = '') {
+            const container = document.getElementById('templates-container');
+            const emptyState = document.getElementById('templates-empty-state');
+            
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            let filteredTemplates = templates;
+            if (filterCategory) {
+                filteredTemplates = templates.filter(template => template.category === filterCategory);
+            }
+            
+            if (filteredTemplates.length === 0) {
+                if (emptyState) {
+                    emptyState.style.display = 'block';
+                    emptyState.innerHTML = filterCategory 
+                        ? `<i class="fas fa-file-download"></i>
+                           <h3>No hay plantillas en esta categoría</h3>
+                           <p>No se encontraron plantillas en la categoría "${filterCategory}".</p>`
+                        : `<i class="fas fa-file-download"></i>
+                           <h3>No hay plantillas publicadas aún</h3>
+                           <p>Espera a que un administrador publique plantillas gratuitas.</p>`;
+                }
+                return;
+            }
+            
+            if (emptyState) emptyState.style.display = 'none';
+            
+            filteredTemplates.forEach((template, index) => {
+                const thumbnailSrc = template.thumbnail || getDefaultTemplateThumbnail(template.type);
+                const tagClass = template.type === 'google' ? 'google-tag' : (template.type === 'canva' ? 'canva-tag' : 'other-template-tag');
+                const tagIcon = template.type === 'google' ? 'fab fa-google-drive' : (template.type === 'canva' ? 'fab fa-canva' : 'fas fa-link');
+                const tagText = template.type === 'google' ? 'Google Drive' : (template.type === 'canva' ? 'Canva' : 'Enlace Directo');
+                
+                const templateCard = document.createElement('div');
+                templateCard.className = 'product-card template-card';
+                templateCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${thumbnailSrc}" alt="${template.title}" class="template-thumbnail">
+                        <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            <i class="${tagIcon}"></i> ${tagText}
+                        </div>
+                        <div style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            <i class="fas fa-download"></i> Descargar
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="${tagClass}">${template.category}</div>
+                        <h3>${template.title}</h3>
+                        <p>${template.description.substring(0, 100)}${template.description.length > 100 ? '...' : ''}</p>
+                        <div class="template-info">
+                            ${template.format ? `<p><strong>Formato:</strong> ${template.format}</p>` : ''}
+                            <p><strong>Publicado:</strong> ${new Date(template.createdAt?.toDate()).toLocaleDateString()}</p>
+                            <a href="${template.url}" target="_blank" class="template-link-btn">
+                                <i class="fas fa-download"></i> Descargar Plantilla
+                            </a>
+                            ${isAdmin ? `
+                                <button class="btn btn-small edit-template-btn" data-index="${index}" style="margin-left: 10px;">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button class="btn btn-small delete-template-btn delete-btn" data-index="${index}" style="margin-left: 5px;">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                const downloadBtn = templateCard.querySelector('.template-link-btn');
+                const editBtn = templateCard.querySelector('.edit-template-btn');
+                const deleteBtn = templateCard.querySelector('.delete-template-btn');
+                
+                if (downloadBtn) {
+                    downloadBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        // El enlace ya está configurado para abrir en nueva pestaña
+                    });
+                }
+                
+                if (isAdmin && editBtn) {
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        editTemplate(index);
+                    });
+                }
+                
+                if (isAdmin && deleteBtn) {
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteTemplateFirebase(template.id, template.title);
+                    });
+                }
+                
+                container.appendChild(templateCard);
+            });
+        }
+        
+        function getDefaultTemplateThumbnail(type) {
+            const colors = {
+                google: '#4285F4',
+                canva: '#00C4CC',
+                other: '#8a6bff'
+            };
+            const color = colors[type] || '#666';
+            const icon = type === 'google' ? 'Google Drive' : (type === 'canva' ? 'Canva' : 'Plantilla');
+            return `https://via.placeholder.com/300x200/${color.replace('#', '')}/FFFFFF?text=${encodeURIComponent(icon)}`;
+        }
+        
+        async function verifyTemplateUrl() {
+            const url = document.getElementById('template-url')?.value.trim();
+            const loadingIndicator = document.getElementById('template-loading-indicator');
+            const errorMessage = document.getElementById('template-error-message');
+            const step1Section = document.getElementById('template-step1-section');
+            const step2Section = document.getElementById('template-step2-section');
+            
+            if (!url) {
+                showTemplateError('Por favor, introduce un enlace de plantilla');
+                return;
+            }
+            
+            if (!isValidTemplateUrl(url, currentTemplateType)) {
+                showTemplateError('Por favor, introduce un enlace válido para el tipo seleccionado');
+                return;
+            }
+            
+            if (templates.find(template => template.url === url)) {
+                showTemplateError('Esta plantilla ya ha sido publicada');
+                return;
+            }
+            
+            if (loadingIndicator) loadingIndicator.style.display = 'block';
+            if (errorMessage) errorMessage.style.display = 'none';
+            
+            try {
+                // Simular verificación de enlace
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                currentTemplateUrl = url;
+                
+                document.getElementById('template-success-message').style.display = 'block';
+                if (step1Section) step1Section.style.display = 'none';
+                if (step2Section) step2Section.style.display = 'block';
+                
+                showTemplatePreview();
+                
+            } catch (error) {
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                showTemplateError('Error al verificar el enlace: ' + error.message);
+            }
+        }
+        
+        function showTemplatePreview() {
+            const previewContent = document.getElementById('template-preview-content');
+            const templatePreview = document.getElementById('template-preview');
+            
+            if (previewContent) {
+                previewContent.innerHTML = `
+                    <div class="preview-details">
+                        <p><strong>Tipo:</strong> ${currentTemplateType === 'google' ? 'Google Drive' : (currentTemplateType === 'canva' ? 'Canva' : 'Enlace Directo')}</p>
+                        <p><strong>Enlace:</strong> ${currentTemplateUrl.substring(0, 50)}...</p>
+                        <p><em>Ahora puedes completar la información de la plantilla.</em></p>
+                    </div>
+                `;
+            }
+            
+            if (templatePreview) {
+                templatePreview.style.display = 'block';
+            }
+        }
+        
+        async function saveTemplate() {
+            if (!isAdmin) {
+                showNotification('No tienes permisos para publicar plantillas', 'error');
+                return;
+            }
+            
+            const title = document.getElementById('template-title')?.value.trim();
+            const description = document.getElementById('template-description')?.value.trim();
+            const category = document.getElementById('template-category')?.value.trim();
+            const format = document.getElementById('template-format')?.value.trim();
+            
+            if (!title || !description || !category) {
+                showNotification('Por favor, completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            let thumbnailUrl = currentTemplateThumbnail;
+            const fileInput = document.getElementById('template-thumbnail-file');
+            
+            try {
+                if (fileInput?.files.length > 0) {
+                    thumbnailUrl = await convertImageToDataURL(fileInput.files[0]);
+                }
+                
+                if (!thumbnailUrl) {
+                    thumbnailUrl = getDefaultTemplateThumbnail(currentTemplateType);
+                }
+                
+                const templateData = {
+                    url: currentTemplateUrl,
+                    title: title,
+                    description: description,
+                    category: category,
+                    format: format || '',
+                    thumbnail: thumbnailUrl,
+                    type: currentTemplateType,
+                    isFree: true,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdBy: currentUser.uid,
+                    createdByName: currentUser.displayName || currentUser.email
+                };
+                
+                await db.collection('templates').add(templateData);
+                
+                showNotification(`¡Plantilla "${title}" publicada exitosamente!`, 'success');
+                resetTemplateForm();
+                loadTemplates();
+                
+            } catch (error) {
+                console.error('Error saving template:', error);
+                showNotification('Error al guardar la plantilla', 'error');
+            }
+        }
+        
+        async function updateTemplate() {
+            if (!isAdmin || editingTemplateIndex === -1) return;
+            
+            const title = document.getElementById('edit-template-title')?.value.trim();
+            const description = document.getElementById('edit-template-description')?.value.trim();
+            const category = document.getElementById('edit-template-category')?.value.trim();
+            const format = document.getElementById('edit-template-format')?.value.trim();
+            const template = templates[editingTemplateIndex];
+            
+            if (!title || !description || !category) {
+                showNotification('Por favor, completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            try {
+                let thumbnailUrl = template.thumbnail;
+                const fileInput = document.getElementById('edit-template-thumbnail-file');
+                
+                if (fileInput?.files.length > 0) {
+                    thumbnailUrl = await convertImageToDataURL(fileInput.files[0]);
+                }
+                
+                await db.collection('templates').doc(template.id).update({
+                    title: title,
+                    description: description,
+                    category: category,
+                    format: format || '',
+                    thumbnail: thumbnailUrl,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showNotification('Plantilla actualizada exitosamente', 'success');
+                document.getElementById('edit-template-modal').style.display = 'none';
+                loadTemplates();
+                editingTemplateIndex = -1;
+                
+            } catch (error) {
+                console.error('Error updating template:', error);
+                showNotification('Error al actualizar la plantilla', 'error');
+            }
+        }
+        
+        async function deleteTemplateFirebase(templateId, templateTitle) {
+            if (!isAdmin) {
+                showNotification('No tienes permisos para eliminar plantillas', 'error');
+                return;
+            }
+            
+            if (!confirm(`¿Estás seguro de que quieres eliminar la plantilla "${templateTitle}"?`)) {
+                return;
+            }
+            
+            try {
+                await db.collection('templates').doc(templateId).delete();
+                showNotification('Plantilla eliminada exitosamente', 'success');
+                loadTemplates();
+            } catch (error) {
+                console.error('Error deleting template:', error);
+                showNotification('Error al eliminar la plantilla', 'error');
+            }
+        }
+        
+        function editTemplate(index) {
+            if (!isAdmin) return;
+            
+            editingTemplateIndex = index;
+            const template = templates[index];
+            
+            document.getElementById('edit-template-title').value = template.title;
+            document.getElementById('edit-template-description').value = template.description;
+            document.getElementById('edit-template-category').value = template.category || '';
+            document.getElementById('edit-template-format').value = template.format || '';
+            
+            const preview = document.getElementById('edit-template-thumbnail-preview');
+            if (template.thumbnail) {
+                preview.innerHTML = `<img src="${template.thumbnail}" alt="Vista previa">`;
+            } else {
+                preview.innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
+            }
+            
+            document.getElementById('edit-template-modal').style.display = 'flex';
+        }
+        
+        // FUNCIONES AUXILIARES PARA PLANTILLAS
+        function isValidTemplateUrl(url, type) {
+            if (type === 'google') {
+                const patterns = [
+                    /^https?:\/\/(drive|docs)\.google\.com\/.*/,
+                    /^https?:\/\/drive\.google\.com\/file\/d\/.*/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            } else if (type === 'canva') {
+                const patterns = [
+                    /^https?:\/\/(www\.)?canva\.com\/design\/.*/,
+                    /^https?:\/\/.*\.canva\.com\/.*/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            } else {
+                // Para otros tipos, aceptamos cualquier URL válida
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+        }
+        
+        // FUNCIONES COMPARTIDAS
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                showNotification('Por favor, selecciona solo archivos de imagen', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentThumbnail = event.target.result;
+                document.getElementById('thumbnail-preview').innerHTML = `<img src="${currentThumbnail}" alt="Vista previa">`;
+                document.getElementById('product-thumbnail').value = currentThumbnail;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleEditImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('edit-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleVideoImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                showNotification('Por favor, selecciona solo archivos de imagen', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentVideoThumbnail = event.target.result;
+                document.getElementById('video-thumbnail-preview').innerHTML = `<img src="${currentVideoThumbnail}" alt="Vista previa">`;
+                document.getElementById('video-thumbnail').value = currentVideoThumbnail;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleEditVideoImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('edit-video-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleTemplateImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                showNotification('Por favor, selecciona solo archivos de imagen', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentTemplateThumbnail = event.target.result;
+                document.getElementById('template-thumbnail-preview').innerHTML = `<img src="${currentTemplateThumbnail}" alt="Vista previa">`;
+                document.getElementById('template-thumbnail').value = currentTemplateThumbnail;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function handleEditTemplateImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('edit-template-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function convertImageToDataURL(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) {
+                    resolve('');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    resolve(event.target.result);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function showPreview(productInfo) {
+            const previewContent = document.getElementById('preview-content');
+            const productPreview = document.getElementById('product-preview');
+            
+            if (previewContent) {
+                previewContent.innerHTML = `
+                    ${productInfo.thumbnail ? `<img src="${productInfo.thumbnail}" alt="Portada" class="preview-image">` : ''}
+                    <div class="preview-details">
+                        <p><strong>Título:</strong> ${productInfo.title}</p>
+                        <p><strong>Precio:</strong> ${productInfo.price}</p>
+                        <p><strong>Categoría:</strong> ${productInfo.category || 'No especificada'}</p>
+                        <p><strong>Descripción:</strong> ${productInfo.description.substring(0, 150)}...</p>
+                    </div>
+                `;
+            }
+            
+            if (productPreview) {
+                productPreview.style.display = 'block';
+            }
+        }
+        
+        function showVideoPreview(videoInfo) {
+            const previewContent = document.getElementById('video-preview-content');
+            const videoPreview = document.getElementById('video-preview');
+            
+            if (previewContent) {
+                previewContent.innerHTML = `
+                    ${videoInfo.thumbnail ? `<img src="${videoInfo.thumbnail}" alt="Miniatura" class="preview-image">` : ''}
+                    <div class="preview-details">
+                        <p><strong>Título:</strong> ${videoInfo.title}</p>
+                        <p><strong>Tipo:</strong> ${currentVideoType}</p>
+                        <p><strong>Descripción:</strong> ${videoInfo.description.substring(0, 150)}...</p>
+                    </div>
+                `;
+            }
+            
+            if (videoPreview) {
+                videoPreview.style.display = 'block';
+            }
+        }
+        
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            if (errorElement) {
+                errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function showVideoError(message) {
+            const errorElement = document.getElementById('video-error-message');
+            if (errorElement) {
+                errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function showTemplateError(message) {
+            const errorElement = document.getElementById('template-error-message');
+            if (errorElement) {
+                errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function resetForm() {
+            const step1Section = document.getElementById('step1-section');
+            const step2Section = document.getElementById('step2-section');
+            
+            if (step1Section) step1Section.style.display = 'block';
+            if (step2Section) step2Section.style.display = 'none';
+            
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('product-preview').style.display = 'none';
+            
+            document.getElementById('hotmart-url').value = '';
+            document.getElementById('product-title').value = '';
+            document.getElementById('product-description').value = '';
+            document.getElementById('product-price').value = '';
+            document.getElementById('product-category').value = '';
+            document.getElementById('product-thumbnail').value = '';
+            document.getElementById('product-thumbnail-file').value = '';
+            
+            document.getElementById('thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
+            currentHotmartUrl = '';
+            currentThumbnail = '';
+        }
+        
+        function resetVideoForm() {
+            const step1Section = document.getElementById('video-step1-section');
+            const step2Section = document.getElementById('video-step2-section');
+            
+            if (step1Section) step1Section.style.display = 'block';
+            if (step2Section) step2Section.style.display = 'none';
+            
+            document.getElementById('video-loading-indicator').style.display = 'none';
+            document.getElementById('video-error-message').style.display = 'none';
+            document.getElementById('video-success-message').style.display = 'none';
+            document.getElementById('video-preview').style.display = 'none';
+            
+            document.getElementById('video-url').value = '';
+            document.getElementById('video-title').value = '';
+            document.getElementById('video-description').value = '';
+            document.getElementById('video-category').value = '';
+            document.getElementById('video-duration').value = '';
+            document.getElementById('video-thumbnail').value = '';
+            document.getElementById('video-thumbnail-file').value = '';
+            
+            document.getElementById('video-thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
+            currentVideoUrl = '';
+            currentVideoThumbnail = '';
+        }
+        
+        function resetTemplateForm() {
+            const step1Section = document.getElementById('template-step1-section');
+            const step2Section = document.getElementById('template-step2-section');
+            
+            if (step1Section) step1Section.style.display = 'block';
+            if (step2Section) step2Section.style.display = 'none';
+            
+            document.getElementById('template-loading-indicator').style.display = 'none';
+            document.getElementById('template-error-message').style.display = 'none';
+            document.getElementById('template-success-message').style.display = 'none';
+            document.getElementById('template-preview').style.display = 'none';
+            
+            document.getElementById('template-url').value = '';
+            document.getElementById('template-title').value = '';
+            document.getElementById('template-description').value = '';
+            document.getElementById('template-category').value = '';
+            document.getElementById('template-format').value = '';
+            document.getElementById('template-thumbnail').value = '';
+            document.getElementById('template-thumbnail-file').value = '';
+            
+            document.getElementById('template-thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
+            currentTemplateUrl = '';
+            currentTemplateThumbnail = '';
+        }
+        
         // FUNCIONES AUXILIARES PARA HOTMART
         function isValidCheckoutUrl(url) {
             const checkoutPattern = /^https?:\/\/(www\.)?pay\.hotmart\.com\/[A-Za-z0-9]+/;
@@ -3797,188 +4892,6 @@
             }
         }
         
-        // FUNCIONES COMPARTIDAS
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            if (!file.type.match('image.*')) {
-                showNotification('Por favor, selecciona solo archivos de imagen', 'error');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                currentThumbnail = event.target.result;
-                document.getElementById('thumbnail-preview').innerHTML = `<img src="${currentThumbnail}" alt="Vista previa">`;
-                document.getElementById('product-thumbnail').value = currentThumbnail;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function handleEditImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('edit-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function handleVideoImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            if (!file.type.match('image.*')) {
-                showNotification('Por favor, selecciona solo archivos de imagen', 'error');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                currentVideoThumbnail = event.target.result;
-                document.getElementById('video-thumbnail-preview').innerHTML = `<img src="${currentVideoThumbnail}" alt="Vista previa">`;
-                document.getElementById('video-thumbnail').value = currentVideoThumbnail;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function handleEditVideoImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('edit-video-thumbnail-preview').innerHTML = `<img src="${event.target.result}" alt="Vista previa">`;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function convertImageToDataURL(file) {
-            return new Promise((resolve, reject) => {
-                if (!file) {
-                    resolve('');
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    resolve(event.target.result);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        function showPreview(productInfo) {
-            const previewContent = document.getElementById('preview-content');
-            const productPreview = document.getElementById('product-preview');
-            
-            if (previewContent) {
-                previewContent.innerHTML = `
-                    ${productInfo.thumbnail ? `<img src="${productInfo.thumbnail}" alt="Portada" class="preview-image">` : ''}
-                    <div class="preview-details">
-                        <p><strong>Título:</strong> ${productInfo.title}</p>
-                        <p><strong>Precio:</strong> ${productInfo.price}</p>
-                        <p><strong>Categoría:</strong> ${productInfo.category || 'No especificada'}</p>
-                        <p><strong>Descripción:</strong> ${productInfo.description.substring(0, 150)}...</p>
-                    </div>
-                `;
-            }
-            
-            if (productPreview) {
-                productPreview.style.display = 'block';
-            }
-        }
-        
-        function showVideoPreview(videoInfo) {
-            const previewContent = document.getElementById('video-preview-content');
-            const videoPreview = document.getElementById('video-preview');
-            
-            if (previewContent) {
-                previewContent.innerHTML = `
-                    ${videoInfo.thumbnail ? `<img src="${videoInfo.thumbnail}" alt="Miniatura" class="preview-image">` : ''}
-                    <div class="preview-details">
-                        <p><strong>Título:</strong> ${videoInfo.title}</p>
-                        <p><strong>Tipo:</strong> ${currentVideoType}</p>
-                        <p><strong>Descripción:</strong> ${videoInfo.description.substring(0, 150)}...</p>
-                    </div>
-                `;
-            }
-            
-            if (videoPreview) {
-                videoPreview.style.display = 'block';
-            }
-        }
-        
-        function showError(message) {
-            const errorElement = document.getElementById('error-message');
-            if (errorElement) {
-                errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-                errorElement.style.display = 'block';
-            }
-        }
-        
-        function showVideoError(message) {
-            const errorElement = document.getElementById('video-error-message');
-            if (errorElement) {
-                errorElement.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-                errorElement.style.display = 'block';
-            }
-        }
-        
-        function resetForm() {
-            const step1Section = document.getElementById('step1-section');
-            const step2Section = document.getElementById('step2-section');
-            
-            if (step1Section) step1Section.style.display = 'block';
-            if (step2Section) step2Section.style.display = 'none';
-            
-            document.getElementById('loading-indicator').style.display = 'none';
-            document.getElementById('error-message').style.display = 'none';
-            document.getElementById('success-message').style.display = 'none';
-            document.getElementById('product-preview').style.display = 'none';
-            
-            document.getElementById('hotmart-url').value = '';
-            document.getElementById('product-title').value = '';
-            document.getElementById('product-description').value = '';
-            document.getElementById('product-price').value = '';
-            document.getElementById('product-category').value = '';
-            document.getElementById('product-thumbnail').value = '';
-            document.getElementById('product-thumbnail-file').value = '';
-            
-            document.getElementById('thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
-            currentHotmartUrl = '';
-            currentThumbnail = '';
-        }
-        
-        function resetVideoForm() {
-            const step1Section = document.getElementById('video-step1-section');
-            const step2Section = document.getElementById('video-step2-section');
-            
-            if (step1Section) step1Section.style.display = 'block';
-            if (step2Section) step2Section.style.display = 'none';
-            
-            document.getElementById('video-loading-indicator').style.display = 'none';
-            document.getElementById('video-error-message').style.display = 'none';
-            document.getElementById('video-success-message').style.display = 'none';
-            document.getElementById('video-preview').style.display = 'none';
-            
-            document.getElementById('video-url').value = '';
-            document.getElementById('video-title').value = '';
-            document.getElementById('video-description').value = '';
-            document.getElementById('video-category').value = '';
-            document.getElementById('video-duration').value = '';
-            document.getElementById('video-thumbnail').value = '';
-            document.getElementById('video-thumbnail-file').value = '';
-            
-            document.getElementById('video-thumbnail-preview').innerHTML = '<i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>';
-            currentVideoUrl = '';
-            currentVideoThumbnail = '';
-        }
-        
         // FUNCIONES DE NOTIFICACIÓN
         function showNotification(message, type) {
             const notification = document.createElement('div');
@@ -4032,11 +4945,18 @@
         window.handleLogout = handleLogout;
         window.editHotmartProduct = editHotmartProduct;
         window.editVideo = editVideo;
+        window.editTemplate = editTemplate;
         window.closeMobileMenu = closeMobileMenu;
         window.filterVideos = function(category) {
             document.getElementById('category-filter').value = category;
             renderVideos(category);
             switchTab('videos');
+        };
+        
+        window.filterTemplates = function(category) {
+            document.getElementById('template-category-filter').value = category;
+            renderTemplates(category);
+            switchTab('plantillas-gratis');
         };
         
         // ESTILOS ADICIONALES
@@ -4076,6 +4996,7 @@
     </script>
 </body>
 </html>
+
 
 
 
