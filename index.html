@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papelería Creativa - Plantillas Gratis</title>
+    <title>Papelería Creativa - Editor de Invitaciones</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Open+Sans:wght@300;400;600&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;600&family=Oswald:wght@300;400;500&family=Raleway:wght@300;400;600&family=Playfair+Display:wght@400;700&family=Merriweather:wght@300;400;700&family=Source+Sans+Pro:wght@300;400;600&family=PT+Sans:wght@400;700&family=Ubuntu:wght@300;400;500&family=Poppins:wght@300;400;600&family=Dancing+Script:wght@400;700&family=Pacifico&family=Great+Vibes&family=Satisfy&family=Courgette&family=Parisienne&display=swap" rel="stylesheet">
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-        /* ESTILOS GENERALES - TODOS LOS ORIGINALES MÁS NUEVOS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        
         :root {
             --primary: #ff6b8b;
             --secondary: #8a6bff;
@@ -36,6 +34,17 @@
             --google: #4285F4;
             --canva: #00C4CC;
             --whatsapp: #25D366;
+            --canvas-bg: #f0f1f5;
+            --editor-primary: #4a6fa5;
+            --editor-secondary: #e9ecef;
+            --editor-accent: #2c5530;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
         
         body {
@@ -459,312 +468,433 @@
             background: linear-gradient(to right, var(--primary), var(--secondary));
         }
         
-        /* EDITOR */
-        .editor-container {
+        /* ESTILOS DEL EDITOR DE INVITACIONES */
+        .editor-wrapper {
             background-color: white;
             border-radius: 10px;
-            padding: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 20px;
         }
         
-        .editor-toolbar {
+        .editor-header {
+            background: linear-gradient(to right, #000000, #000000);
+            color: white;
+            padding: 15px 20px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .tool-group {
-            display: flex;
-            gap: 5px;
+            justify-content: space-between;
             align-items: center;
-            padding: 5px 10px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
         }
         
-        .editor-tool {
+        .editor-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .editor-header-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .editor-header-controls button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
             padding: 8px 15px;
-            background-color: #f5f5f5;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .editor-header-controls button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .editor-main-content {
             display: flex;
-            align-items: center;
-            gap: 5px;
+            height: 70vh;
         }
         
-        .editor-tool:hover {
-            background-color: #e9e9e9;
+        .editor-sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #eee;
         }
         
-        .editor-tool.active {
-            background-color: var(--primary);
-            color: white;
+        .editor-sidebar-section {
+            margin-bottom: 25px;
         }
         
-        .editor-content {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+        .editor-sidebar-section h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--editor-primary);
         }
         
-        .editor-canvas-container {
+        .editor-area {
             flex: 1;
-            min-width: 300px;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+        
+        .editor-preview-container {
+            flex: 1;
+            padding: 30px;
             overflow: auto;
-            max-height: 70vh;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            background-color: #f9f9f9;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #f0f0f0;
         }
         
-        .editor-canvas {
+        .invitation-preview {
+            width: 600px;
+            min-height: 800px;
+            background: var(--canvas-bg);
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             position: relative;
-            margin: 0 auto;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transform-origin: center center;
-        }
-        
-        .canvas-element {
-            position: absolute;
-            cursor: move;
-            user-select: none;
-            max-width: 100%;
-            word-wrap: break-word;
-        }
-        
-        .text-element {
-            padding: 5px;
-            border: 1px dashed transparent;
-        }
-        
-        .image-element {
-            border: 1px dashed transparent;
-        }
-        
-        .canvas-element.selected {
-            border: 1px dashed var(--primary);
-            background-color: rgba(255, 107, 139, 0.1);
-        }
-        
-        .canvas-element:hover {
-            border: 1px dashed #ccc;
-        }
-        
-        .editor-controls {
-            flex: 0 0 250px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .control-group label {
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .control-group input, .control-group select {
-            padding: 8px 10px;
+            overflow: hidden;
+            cursor: default;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            transition: width 0.3s, height 0.3s;
         }
         
-        .color-picker {
+        .element-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--editor-primary);
             display: flex;
-            gap: 5px;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+        }
+        
+        .element-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .element-item:active {
+            cursor: grabbing;
+        }
+        
+        .element-icon {
+            font-size: 1.5rem;
+        }
+        
+        .element-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .project-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--editor-accent);
+        }
+        
+        .project-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-item h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .project-item p {
+            color: var(--text, #666);
+            font-size: 0.9rem;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-action-btn {
+            background: var(--editor-primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .quick-action-btn:hover {
+            background: var(--editor-accent);
+        }
+        
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
         
         .color-option {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: transform 0.2s;
         }
         
-        .color-option.selected {
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
             border-color: var(--dark);
+            transform: scale(1.1);
         }
         
-        .font-options {
+        .font-selector {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 10px;
+            margin-top: 10px;
         }
         
-        .font-option {
-            padding: 5px 10px;
+        .font-selector select {
+            padding: 8px;
+            border-radius: 5px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
+            background-color: white;
+        }
+        
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .font-size-control input {
+            flex: 1;
+        }
+        
+        .font-size-control span {
+            min-width: 40px;
             text-align: center;
         }
         
-        .font-option.selected {
-            background-color: var(--primary);
+        .text-style-controls {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .text-style-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 40px;
+        }
+        
+        .text-style-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .text-style-btn.active {
+            background: var(--editor-primary);
             color: white;
         }
         
-        .editor-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
+        .color-palette-container {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .download-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .color-palette-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--dark);
         }
         
-        .download-btn {
-            background-color: var(--secondary);
-            color: white;
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
         }
         
-        .download-btn:hover {
-            background-color: #7a5bff;
+        .color-palette-item {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid #ddd;
         }
         
-        .image-info {
-            background-color: #f5f5f5;
+        .color-palette-item:hover {
+            transform: scale(1.2);
+        }
+        
+        .color-palette-item.active {
+            border: 2px solid var(--dark);
+            transform: scale(1.2);
+        }
+        
+        /* Elementos arrastrables */
+        .draggable {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            transition: all 0.2s;
+            min-width: 100px;
+            min-height: 40px;
+            border: 2px dashed transparent;
             padding: 10px;
             border-radius: 5px;
-            font-size: 14px;
-            margin-top: 10px;
         }
         
-        .zoom-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
+        .draggable:hover {
+            border: 2px dashed var(--editor-primary);
+            background: rgba(74, 111, 165, 0.1);
         }
         
-        .elements-panel {
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 10px;
+        .draggable.selected {
+            border: 2px solid var(--editor-accent);
+            background: rgba(44, 85, 48, 0.1);
+            z-index: 100;
         }
         
-        .elements-panel h4 {
-            margin-bottom: 10px;
-            font-size: 16px;
-            color: var(--dark);
-        }
-        
-        .element-item {
-            padding: 8px 12px;
-            background-color: white;
-            border-radius: 4px;
-            margin-bottom: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-        
-        .element-item:hover {
-            background-color: #e9e9e9;
-        }
-        
-        .element-item.selected {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        /* MODALES */
-        .templates-modal, .modal, .auth-modal, .edit-hotmart-modal, .edit-video-modal, .video-modal, .edit-template-modal {
+        .resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--editor-accent);
+            border-radius: 50%;
+            cursor: nwse-resize;
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        }
+        
+        .resize-handle.bottom-right {
+            bottom: -6px;
+            right: -6px;
+        }
+        
+        .resize-handle.bottom-left {
+            bottom: -6px;
+            left: -6px;
+            cursor: nesw-resize;
+        }
+        
+        .resize-handle.top-right {
+            top: -6px;
+            right: -6px;
+            cursor: nesw-resize;
+        }
+        
+        .resize-handle.top-left {
+            top: -6px;
+            left: -6px;
+            cursor: nwse-resize;
+        }
+        
+        .draggable.selected .resize-handle {
+            display: block;
+        }
+        
+        .editable-text {
+            padding: 5px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            min-height: 1.2em;
+            min-width: 50px;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            cursor: text;
         }
         
-        .templates-content, .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content, .edit-template-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+        .editable-text:hover {
+            background: rgba(74, 111, 165, 0.1);
         }
         
-        .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content, .edit-template-content {
-            max-width: 500px;
+        .editable-text:focus {
+            outline: 2px solid var(--editor-accent);
+            background: rgba(74, 111, 165, 0.2);
         }
         
-        .edit-hotmart-content, .edit-video-content, .edit-template-content {
-            max-width: 600px;
-        }
-        
-        .modal h3, .auth-content h3 {
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        .format-options {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .format-option {
-            padding: 10px 20px;
-            border: 2px solid var(--primary);
+        .element-controls {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: white;
             border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            display: none;
+            z-index: 100;
+            gap: 5px;
         }
         
-        .format-option.selected {
-            background-color: var(--primary);
-            color: white;
+        .image-controls {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            display: none;
+            z-index: 100;
+            gap: 5px;
+            flex-wrap: wrap;
+            width: 350px;
         }
         
-        .format-option:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .modal-actions {
+        .image-controls .slider-container {
             display: flex;
+            align-items: center;
             gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
+            width: 100%;
+            margin-top: 5px;
+        }
+        
+        .image-controls .slider-container label {
+            font-size: 0.8rem;
+            min-width: 80px;
+        }
+        
+        .image-controls .slider-container input {
+            flex: 1;
+        }
+        
+        .image-controls .slider-container span {
+            min-width: 30px;
+            text-align: center;
+            font-size: 0.8rem;
         }
         
         /* CATÁLOGO */
@@ -795,6 +925,7 @@
             justify-content: center;
             color: var(--primary);
             font-size: 40px;
+            position: relative;
         }
         
         .product-img img {
@@ -889,92 +1020,6 @@
             color: var(--hotmart);
         }
         
-        .canva-thumbnail {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .canva-thumbnail:hover {
-            transform: scale(1.02);
-        }
-        
-        .canva-design-info {
-            padding: 15px;
-        }
-        
-        .canva-design-info h4 {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        
-        .canva-design-info p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .canva-link-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--secondary);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-        
-        .canva-link-btn:hover {
-            background-color: #7a5bff;
-        }
-        
-        .canva-empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #888;
-            grid-column: 1 / -1;
-        }
-        
-        .canva-empty-state i {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
-        
-        .canva-empty-state h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        
-        .canva-design-card {
-            border: 2px solid #eaeaea;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        
-        .canva-design-card:hover {
-            border-color: var(--primary);
-        }
-        
-        .canva-tag {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--dark);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
         .hotmart-tag {
             display: inline-block;
             background-color: var(--hotmart);
@@ -1010,7 +1055,7 @@
             background-color: #E55A2D;
         }
         
-        /* SECCIÓN DE VIDEOS */
+        /* VIDEOS */
         .videos-admin-section {
             background-color: white;
             border-radius: 10px;
@@ -1041,32 +1086,29 @@
             border-color: var(--primary);
         }
         
-        .videos-help {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #666;
-            margin-top: 10px;
+        .video-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
-        .videos-help ul {
-            margin-left: 20px;
-            margin-top: 10px;
-            list-style: none;
+        .video-type-btn {
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .videos-help li {
-            margin-bottom: 5px;
-            padding-left: 15px;
-            position: relative;
-        }
-        
-        .videos-help li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
+        .video-type-btn.active {
+            background-color: var(--youtube);
+            color: white;
+            border-color: var(--youtube);
         }
         
         .video-thumbnail {
@@ -1115,33 +1157,11 @@
             background-color: #cc0000;
         }
         
-        .videos-empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #888;
-            grid-column: 1 / -1;
-        }
-        
-        .videos-empty-state i {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
-        
-        .videos-empty-state h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        
         .video-card {
             border: 2px solid #eaeaea;
             border-radius: 10px;
             overflow: hidden;
             transition: all 0.3s;
-        }
-        
-        .video-card:hover {
-            border-color: var(--primary);
         }
         
         .video-tag {
@@ -1155,12 +1175,363 @@
             margin-bottom: 10px;
         }
         
-        .vimeo-tag {
-            background-color: var(--vimeo);
+        /* PLANTILLAS */
+        .templates-admin-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .other-tag {
-            background-color: var(--secondary);
+        .template-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .template-type-btn {
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .template-type-btn.active {
+            background-color: var(--google);
+            color: white;
+            border-color: var(--google);
+        }
+        
+        .templates-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .templates-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .templates-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .template-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .template-thumbnail:hover {
+            transform: scale(1.02);
+        }
+        
+        .template-info {
+            padding: 15px;
+        }
+        
+        .template-info h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .template-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .template-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .template-link-btn:hover {
+            background-color: #ff5a7d;
+        }
+        
+        .template-card {
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .google-tag {
+            background-color: var(--google);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .canva-tag {
+            background-color: var(--canva);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        /* MODALES */
+        .auth-modal, .edit-hotmart-modal, .edit-video-modal, .video-modal, .edit-template-modal, .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-content, .edit-hotmart-content, .edit-video-content, .video-modal-content, .edit-template-content, .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .video-modal-content {
+            max-width: 900px;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .auth-form.active {
+            display: flex;
+        }
+        
+        .auth-form input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .control-group input, .control-group select, .control-group textarea {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .control-group {
+            flex: 1;
+        }
+        
+        .image-upload-container {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .image-upload-container:hover {
+            border-color: var(--primary);
+        }
+        
+        .image-upload-container i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+        
+        .thumbnail-preview {
+            width: 100%;
+            height: 150px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .thumbnail-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .delete-btn {
+            background-color: #ff4444 !important;
+            color: white !important;
+            border-color: #ff4444 !important;
+        }
+        
+        .delete-btn:hover {
+            background-color: #cc0000 !important;
+        }
+        
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin-bottom: 20px;
+        }
+        
+        .video-player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .video-description {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message, .success-message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ddd;
         }
         
         /* FOOTER */
@@ -1244,577 +1615,6 @@
             font-size: 14px;
         }
         
-        /* FORMULARIOS */
-        .url-type-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .url-type-btn {
-            padding: 8px 15px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: #f5f5f5;
-        }
-        
-        .url-type-btn.active {
-            background-color: var(--hotmart);
-            color: white;
-            border-color: var(--hotmart);
-        }
-        
-        .video-type-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .video-type-btn {
-            padding: 8px 15px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: #f5f5f5;
-        }
-        
-        .video-type-btn.active {
-            background-color: var(--youtube);
-            color: white;
-            border-color: var(--youtube);
-        }
-        
-        .vimeo-type-btn.active {
-            background-color: var(--vimeo);
-            border-color: var(--vimeo);
-        }
-        
-        .other-type-btn.active {
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-        }
-        
-        .url-example {
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .product-form, .video-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .product-form .control-group, .video-form .control-group {
-            margin-bottom: 0;
-        }
-        
-        .product-form label, .video-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .product-form input,
-        .product-form textarea,
-        .product-form select,
-        .video-form input,
-        .video-form textarea,
-        .video-form select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        
-        .product-form textarea, .video-form textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .form-row .control-group {
-            flex: 1;
-        }
-        
-        .thumbnail-preview {
-            width: 100%;
-            height: 150px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        
-        .thumbnail-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-        
-        .step-indicator {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .step {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            font-weight: 500;
-            color: #666;
-        }
-        
-        .step.active {
-            background-color: var(--hotmart);
-            color: white;
-        }
-        
-        /* BOTONES ELIMINAR */
-        .delete-btn {
-            background-color: #ff4444 !important;
-            color: white !important;
-            border-color: #ff4444 !important;
-        }
-        
-        .delete-btn:hover {
-            background-color: #cc0000 !important;
-            border-color: #cc0000 !important;
-        }
-        
-        /* LOADING */
-        .loading-indicator {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: var(--hotmart);
-        }
-        
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--hotmart);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .success-message {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .image-upload-container {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.3s;
-            margin-top: 10px;
-        }
-        
-        .image-upload-container:hover {
-            border-color: var(--primary);
-        }
-        
-        .image-upload-container i {
-            font-size: 48px;
-            color: #ddd;
-            margin-bottom: 10px;
-        }
-        
-        .product-preview, .video-preview {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            background-color: #f9f9f9;
-        }
-        
-        .product-preview h4, .video-preview h4 {
-            margin-bottom: 10px;
-            color: var(--hotmart);
-        }
-        
-        .preview-image {
-            width: 100%;
-            max-height: 150px;
-            object-fit: contain;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        
-        .preview-details {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .preview-details p {
-            margin-bottom: 5px;
-        }
-        
-        /* AUTH MODAL */
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .auth-tab {
-            flex: 1;
-            padding: 15px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .auth-tab.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-        }
-        
-        .auth-form {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .auth-form.active {
-            display: flex;
-        }
-        
-        .auth-form input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
-        .auth-form input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .auth-message {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .auth-message.success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .auth-message.error {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-        
-        /* MODAL DE VIDEO */
-        .video-modal-content {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 900px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        
-        .video-modal-content h3 {
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        .video-player-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            margin-bottom: 20px;
-        }
-        
-        .video-player-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-        }
-        
-        .video-description {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        
-        .video-description h4 {
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        /* SECCIÓN DE PLANTILLAS GRATIS */
-        .templates-admin-section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .template-type-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .template-type-btn {
-            padding: 8px 15px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: #f5f5f5;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .template-type-btn.active {
-            color: white;
-            border-color: var(--primary);
-        }
-        
-        .template-type-btn.google.active {
-            background-color: var(--google);
-            border-color: var(--google);
-        }
-        
-        .template-type-btn.canva.active {
-            background-color: var(--canva);
-            border-color: var(--canva);
-        }
-        
-        .template-type-btn.other.active {
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-        }
-        
-        .templates-form {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .templates-input {
-            flex: 1;
-            min-width: 300px;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .templates-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .templates-help {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #666;
-            margin-top: 10px;
-        }
-        
-        .templates-help ul {
-            margin-left: 20px;
-            margin-top: 10px;
-            list-style: none;
-        }
-        
-        .templates-help li {
-            margin-bottom: 5px;
-            padding-left: 15px;
-            position: relative;
-        }
-        
-        .templates-help li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-        }
-        
-        .template-thumbnail {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .template-thumbnail:hover {
-            transform: scale(1.02);
-        }
-        
-        .template-info {
-            padding: 15px;
-        }
-        
-        .template-info h4 {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        
-        .template-info p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .template-link-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--primary);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-        
-        .template-link-btn:hover {
-            background-color: #ff5a7d;
-        }
-        
-        .templates-empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #888;
-            grid-column: 1 / -1;
-        }
-        
-        .templates-empty-state i {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
-        
-        .templates-empty-state h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        
-        .template-card {
-            border: 2px solid #eaeaea;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        
-        .template-card:hover {
-            border-color: var(--primary);
-        }
-        
-        .template-tag {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
-        .google-tag {
-            background-color: var(--google);
-        }
-        
-        .canva-tag {
-            background-color: var(--canva);
-        }
-        
-        .other-template-tag {
-            background-color: var(--secondary);
-        }
-        
-        .template-preview {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            background-color: #f9f9f9;
-        }
-        
-        .template-preview h4 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .hamburger-btn {
@@ -1825,17 +1625,14 @@
                 display: none;
             }
             
-            .tabs {
-                padding: 0 10px;
-                font-size: 14px;
+            .editor-main-content {
+                flex-direction: column;
             }
             
-            .tab {
-                padding: 12px 15px;
-            }
-            
-            .hero h2 {
-                font-size: 36px;
+            .editor-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #eee;
             }
         }
         
@@ -1875,14 +1672,6 @@
                 margin-right: 5px;
             }
             
-            .editor-content {
-                flex-direction: column;
-            }
-            
-            .editor-controls {
-                flex: 1;
-            }
-            
             .canva-form, .videos-form, .templates-form {
                 flex-direction: column;
             }
@@ -1896,8 +1685,13 @@
                 gap: 10px;
             }
             
-            .template-type-selector {
-                justify-content: center;
+            .invitation-preview {
+                width: 100%;
+                min-height: 600px;
+            }
+            
+            .color-palette {
+                grid-template-columns: repeat(6, 1fr);
             }
             
             .whatsapp-float {
@@ -1938,55 +1732,14 @@
                 font-size: 12px;
             }
             
-            .modal-content, .auth-content, .edit-hotmart-content, .edit-video-content, .edit-template-content {
+            .modal-content {
                 padding: 20px;
                 width: 95%;
             }
             
-            .whatsapp-float {
-                bottom: 15px;
-                right: 15px;
-                width: 50px;
-                height: 50px;
+            .color-palette {
+                grid-template-columns: repeat(4, 1fr);
             }
-            
-            .whatsapp-float i {
-                font-size: 26px;
-            }
-        }
-        
-        /* ESTILOS PARA PESTAÑAS EN MÓVIL */
-        .mobile-tabs {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .mobile-tab {
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s;
-        }
-        
-        .mobile-tab:hover {
-            background-color: #e9e9e9;
-        }
-        
-        .mobile-tab.active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .mobile-tab i {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
         }
     </style>
 </head>
@@ -2005,12 +1758,12 @@
                 <h1>Papelería<span>Creativa</span></h1>
             </div>
             
-            <!-- Botón Hamburguesa (solo visible en móviles) -->
+            <!-- Botón Hamburguesa -->
             <button class="hamburger-btn" id="hamburger-btn">
                 <i class="fas fa-bars"></i>
             </button>
             
-            <!-- Navegación Desktop (visible en escritorio) -->
+            <!-- Navegación Desktop -->
             <div class="nav-icons" id="desktop-nav">
                 <a href="#" id="search-btn-desktop">
                     <i class="fas fa-search"></i>
@@ -2024,7 +1777,7 @@
             </div>
         </div>
         
-        <!-- Menú Móvil (oculto por defecto) -->
+        <!-- Menú Móvil -->
         <div class="mobile-menu" id="mobile-menu">
             <div class="mobile-nav-icons">
                 <a href="#" id="search-btn-mobile">
@@ -2107,8 +1860,8 @@
                         <i class="fas fa-edit"></i>
                     </div>
                     <div class="product-info">
-                        <h3>Editor de Plantillas</h3>
-                        <p>Crea diseños únicos con nuestro editor intuitivo. Personaliza plantillas para tarjetas, invitaciones, flyers y más.</p>
+                        <h3>Editor de Invitaciones</h3>
+                        <p>Crea diseños únicos con nuestro editor intuitivo. Personaliza invitaciones, tarjetas y más con herramientas profesionales.</p>
                         <button class="btn btn-small" onclick="switchTab('editor')">Probar Editor</button>
                     </div>
                 </div>
@@ -2258,7 +2011,7 @@
             </div>
             
             <div class="catalog-grid" id="hotmart-products-container">
-                <div id="hotmart-empty-state" class="canva-empty-state">
+                <div id="hotmart-empty-state" class="empty-state">
                     <i class="fas fa-shopping-cart"></i>
                     <h3>No hay productos publicados aún</h3>
                     <p>Espera a que un administrador publique productos en el catálogo.</p>
@@ -2266,26 +2019,197 @@
             </div>
         </div>
 
-        <!-- EDITOR -->
+        <!-- EDITOR DE INVITACIONES -->
         <div class="tab-content" id="editor">
             <div class="section-title">
-                <h2>Editor de Plantillas</h2>
-                <p>Esta funcionalidad está actualmente en desarrollo</p>
+                
+              
             </div>
             
-            <div class="editor-container" style="text-align: center; padding: 60px 20px;">
-                <i class="fas fa-tools" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
-                <h3 style="color: #666; margin-bottom: 15px;">¡Próximamente!</h3>
-                <p style="color: #888; max-width: 500px; margin: 0 auto;">El editor de plantillas está siendo mejorado con nuevas funciones. Estará disponible pronto.</p>
-                <p style="color: #aaa; font-size: 14px; margin-top: 10px;">Mientras tanto, puedes explorar nuestras otras secciones.</p>
+            <div class="editor-wrapper">
+                <div class="editor-header">
+                    <h2>Editor de Invitaciones</h2>
+                    <div class="editor-header-controls">
+                        <button id="save-btn">💾 Guardar</button>
+                        <button id="export-btn">📤 Exportar</button>
+                        <button id="preview-btn">👁️ Vista Previa</button>
+                    </div>
+                </div>
                 
-                <div style="margin-top: 30px;">
-                    <button class="btn" onclick="switchTab('catalogo')">
-                        <i class="fas fa-shopping-cart"></i> Ver Catálogo
-                    </button>
-                    <button class="btn btn-primary" onclick="switchTab('plantillas-gratis')" style="margin-left: 10px;">
-                        <i class="fas fa-file-download"></i> Plantillas Gratis
-                    </button>
+                <div class="editor-main-content">
+                    <div class="editor-sidebar">
+                        <div class="editor-sidebar-section">
+                            <h3>Acciones Rápidas</h3>
+                            <div class="quick-actions">
+                                <button class="quick-action-btn" id="new-invitation">🆕 Nueva Invitación</button>
+                                <button class="quick-action-btn" id="clear-btn">🗑️ Limpiar Todo</button>
+                            </div>
+                        </div>
+                        
+                        <div class="editor-sidebar-section">
+                            <h3>Elementos de Diseño</h3>
+                            <div class="element-item" data-type="title">
+                                <div class="element-icon">📝</div>
+                                <div>
+                                    <strong>Título</strong>
+                                    <div class="element-desc">Click para añadir un título</div>
+                                </div>
+                            </div>
+                            <div class="element-item" data-type="text">
+                                <div class="element-icon">📄</div>
+                                <div>
+                                    <strong>Texto</strong>
+                                    <div class="element-desc">Click para añadir texto</div>
+                                </div>
+                            </div>
+                            <div class="element-item" data-type="details">
+                                <div class="element-icon">📅</div>
+                                <div>
+                                    <strong>Detalles</strong>
+                                    <div class="element-desc">Click para añadir detalles</div>
+                                </div>
+                            </div>
+                            <div class="element-item" data-type="image">
+                                <div class="element-icon">🖼️</div>
+                                <div>
+                                    <strong>Imagen</strong>
+                                    <div class="element-desc">Click para añadir imagen</div>
+                                </div>
+                            </div>
+                            <div class="element-item" data-type="decoration">
+                                <div class="element-icon">✨</div>
+                                <div>
+                                    <strong>Decoración</strong>
+                                    <div class="element-desc">Click para añadir decoración</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="editor-sidebar-section">
+                            <h3>Personalización</h3>
+                            <div class="input-group">
+                                <label>Fondo del Lienzo:</label>
+                                <div class="color-options">
+                                    <div class="color-option active" style="background-color: #f0f1f5;" data-bg-color="#f0f1f5"></div>
+                                    <div class="color-option" style="background-color: #ffffff;" data-bg-color="#ffffff"></div>
+                                    <div class="color-option" style="background-color: #f8f9fa;" data-bg-color="#f8f9fa"></div>
+                                    <div class="color-option" style="background-color: #e9ecef;" data-bg-color="#e9ecef"></div>
+                                    <div class="color-option" style="background-color: #f3e5f5;" data-bg-color="#f3e5f5"></div>
+                                    <div class="color-option" style="background-color: #e8f5e8;" data-bg-color="#e8f5e8"></div>
+                                    <div class="color-option" style="background-color: #fff8e1;" data-bg-color="#fff8e1"></div>
+                                    <div class="color-option" style="background-color: #e3f2fd;" data-bg-color="#e3f2fd"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="editor-sidebar-section">
+                            <h3>Estilo de Texto</h3>
+                            <div class="font-selector">
+                                <label>Fuente del Texto Seleccionado:</label>
+                                <select id="font-family-selector">
+                                    <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
+                                    <option value="'Roboto', sans-serif">Roboto</option>
+                                    <option value="'Open Sans', sans-serif">Open Sans</option>
+                                    <option value="'Lato', sans-serif">Lato</option>
+                                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                                    <option value="'Oswald', sans-serif">Oswald</option>
+                                    <option value="'Raleway', sans-serif">Raleway</option>
+                                    <option value="'Playfair Display', serif">Playfair Display</option>
+                                    <option value="'Merriweather', serif">Merriweather</option>
+                                    <option value="'Source Sans Pro', sans-serif">Source Sans Pro</option>
+                                    <option value="'PT Sans', sans-serif">PT Sans</option>
+                                    <option value="'Ubuntu', sans-serif">Ubuntu</option>
+                                    <option value="'Poppins', sans-serif">Poppins</option>
+                                    <option value="'Dancing Script', cursive">Dancing Script</option>
+                                    <option value="'Pacifico', cursive">Pacifico</option>
+                                    <option value="'Great Vibes', cursive">Great Vibes</option>
+                                    <option value="'Satisfy', cursive">Satisfy</option>
+                                    <option value="'Courgette', cursive">Courgette</option>
+                                    <option value="'Parisienne', cursive">Parisienne</option>
+                                </select>
+                            </div>
+                            
+                            <div class="font-size-control">
+                                <label>Tamaño de Fuente:</label>
+                                <input type="range" id="font-size-slider" min="8" max="72" value="16">
+                                <span id="font-size-value">16px</span>
+                            </div>
+                            
+                            <div class="text-style-controls">
+                                <button class="text-style-btn" id="bold-btn" title="Negrita">B</button>
+                                <button class="text-style-btn" id="italic-btn" title="Itálica">I</button>
+                                <button class="text-style-btn" id="underline-btn" title="Subrayado">U</button>
+                                <button class="text-style-btn" id="color-btn" title="Color">🎨</button>
+                            </div>
+                            
+                            <!-- Paleta de colores para texto -->
+                            <div class="color-palette-container">
+                                <div class="color-palette-title">Color de Texto</div>
+                                <div class="color-palette" id="text-color-palette">
+                                    <!-- Colores básicos -->
+                                    <div class="color-palette-item" style="background-color: #000000;" data-color="#000000"></div>
+                                    <div class="color-palette-item" style="background-color: #333333;" data-color="#333333"></div>
+                                    <div class="color-palette-item" style="background-color: #666666;" data-color="#666666"></div>
+                                    <div class="color-palette-item" style="background-color: #999999;" data-color="#999999"></div>
+                                    <div class="color-palette-item" style="background-color: #cccccc;" data-color="#cccccc"></div>
+                                    <div class="color-palette-item" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                                    <div class="color-palette-item" style="background-color: #ff0000;" data-color="#ff0000"></div>
+                                    <div class="color-palette-item" style="background-color: #ff6b6b;" data-color="#ff6b6b"></div>
+                                    <!-- Colores cálidos -->
+                                    <div class="color-palette-item" style="background-color: #ff4500;" data-color="#ff4500"></div>
+                                    <div class="color-palette-item" style="background-color: #ff8c00;" data-color="#ff8c00"></div>
+                                    <div class="color-palette-item" style="background-color: #ffa500;" data-color="#ffa500"></div>
+                                    <div class="color-palette-item" style="background-color: #ffd700;" data-color="#ffd700"></div>
+                                    <div class="color-palette-item" style="background-color: #ffff00;" data-color="#ffff00"></div>
+                                    <div class="color-palette-item" style="background-color: #daa520;" data-color="#daa520"></div>
+                                    <div class="color-palette-item" style="background-color: #b8860b;" data-color="#b8860b"></div>
+                                    <div class="color-palette-item" style="background-color: #8b4513;" data-color="#8b4513"></div>
+                                    <!-- Colores fríos -->
+                                    <div class="color-palette-item" style="background-color: #0000ff;" data-color="#0000ff"></div>
+                                    <div class="color-palette-item" style="background-color: #1e90ff;" data-color="#1e90ff"></div>
+                                    <div class="color-palette-item" style="background-color: #00bfff;" data-color="#00bfff"></div>
+                                    <div class="color-palette-item" style="background-color: #87ceeb;" data-color="#87ceeb"></div>
+                                    <div class="color-palette-item" style="background-color: #4682b4;" data-color="#4682b4"></div>
+                                    <div class="color-palette-item" style="background-color: #4a6fa5;" data-color="#4a6fa5"></div>
+                                    <div class="color-palette-item" style="background-color: #191970;" data-color="#191970"></div>
+                                    <div class="color-palette-item" style="background-color: #000080;" data-color="#000080"></div>
+                                    <!-- Colores verdes -->
+                                    <div class="color-palette-item" style="background-color: #008000;" data-color="#008000"></div>
+                                    <div class="color-palette-item" style="background-color: #228b22;" data-color="#228b22"></div>
+                                    <div class="color-palette-item" style="background-color: #32cd32;" data-color="#32cd32"></div>
+                                    <div class="color-palette-item" style="background-color: #90ee90;" data-color="#90ee90"></div>
+                                    <div class="color-palette-item" style="background-color: #006400;" data-color="#006400"></div>
+                                    <div class="color-palette-item" style="background-color: #2c5530;" data-color="#2c5530"></div>
+                                    <div class="color-palette-item" style="background-color: #556b2f;" data-color="#556b2f"></div>
+                                    <div class="color-palette-item" style="background-color: #6b8e23;" data-color="#6b8e23"></div>
+                                    <!-- Colores púrpuras y rosas -->
+                                    <div class="color-palette-item" style="background-color: #800080;" data-color="#800080"></div>
+                                    <div class="color-palette-item" style="background-color: #8b008b;" data-color="#8b008b"></div>
+                                    <div class="color-palette-item" style="background-color: #9932cc;" data-color="#9932cc"></div>
+                                    <div class="color-palette-item" style="background-color: #ba55d3;" data-color="#ba55d3"></div>
+                                    <div class="color-palette-item" style="background-color: #da70d6;" data-color="#da70d6"></div>
+                                    <div class="color-palette-item" style="background-color: #ff1493;" data-color="#ff1493"></div>
+                                    <div class="color-palette-item" style="background-color: #ff69b4;" data-color="#ff69b4"></div>
+                                    <div class="color-palette-item" style="background-color: #ffb6c1;" data-color="#ffb6c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="editor-sidebar-section">
+                            <h3>Mis Proyectos</h3>
+                            <div id="projects-list">
+                                <!-- Los proyectos se cargarán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-area">
+                        <div class="editor-preview-container">
+                            <div class="invitation-preview" id="invitation-preview">
+                                <!-- El lienzo estará vacío al crear nueva invitación -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2449,7 +2373,7 @@
             
             <!-- Grid de Videos -->
             <div class="catalog-grid" id="videos-container">
-                <div id="videos-empty-state" class="videos-empty-state">
+                <div id="videos-empty-state" class="empty-state">
                     <i class="fas fa-video-slash"></i>
                     <h3>No hay videos publicados aún</h3>
                     <p>Espera a que un administrador publique videos tutoriales.</p>
@@ -2625,7 +2549,7 @@
             
             <!-- Grid de Plantillas -->
             <div class="catalog-grid" id="templates-container">
-                <div id="templates-empty-state" class="templates-empty-state">
+                <div id="templates-empty-state" class="empty-state">
                     <i class="fas fa-file-download"></i>
                     <h3>No hay plantillas publicadas aún</h3>
                     <p>Espera a que un administrador publique plantillas gratuitas.</p>
@@ -2663,73 +2587,6 @@
             
             <div class="modal-actions" style="margin-top: 20px;">
                 <button class="btn" id="cancel-auth">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE EDICIÓN DE PLANTILLA -->
-    <div class="edit-template-modal" id="edit-template-modal">
-        <div class="edit-template-content">
-            <h3>Editar Plantilla</h3>
-            
-            <div class="control-group">
-                <label for="edit-template-title">Título de la Plantilla:</label>
-                <input type="text" id="edit-template-title" class="templates-input" placeholder="Título de la plantilla">
-            </div>
-            
-            <div class="control-group">
-                <label for="edit-template-description">Descripción:</label>
-                <textarea id="edit-template-description" class="templates-input" rows="4" placeholder="Descripción de la plantilla"></textarea>
-            </div>
-            
-            <div class="control-group">
-                <label for="edit-template-category">Categoría:</label>
-                <select id="edit-template-category" class="templates-input">
-                    <option value="">Seleccionar categoría</option>
-                    <option value="Planners">Planners</option>
-                    <option value="Calendarios">Calendarios</option>
-                    <option value="Tarjetas">Tarjetas</option>
-                    <option value="Invitaciones">Invitaciones</option>
-                    <option value="Flyers">Flyers</option>
-                    <option value="Social Media">Social Media</option>
-                    <option value="Presentaciones">Presentaciones</option>
-                    <option value="Documentos">Documentos</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label for="edit-template-format">Formato:</label>
-                <select id="edit-template-format" class="templates-input">
-                    <option value="">Seleccionar formato</option>
-                    <option value="PDF">PDF</option>
-                    <option value="JPG">JPG</option>
-                    <option value="PNG">PNG</option>
-                    <option value="PPT">PowerPoint</option>
-                    <option value="DOC">Word</option>
-                    <option value="Canva Template">Plantilla Canva</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label for="edit-template-thumbnail">Portada:</label>
-                <div class="image-upload-container" id="edit-template-image-upload-container">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Haz clic para cambiar la portada</p>
-                </div>
-                <input type="file" id="edit-template-thumbnail-file" accept="image/*" style="display: none;">
-                <div class="thumbnail-preview" id="edit-template-thumbnail-preview">
-                    <i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>
-                </div>
-            </div>
-            
-            <div class="modal-actions">
-                <button class="btn" id="cancel-edit-template">Cancelar</button>
-                <button class="btn delete-btn" id="delete-template-btn">
-                    <i class="fas fa-trash"></i> Eliminar Plantilla
-                </button>
-                <button class="btn btn-primary" id="save-edit-template">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -2873,6 +2730,101 @@
         </div>
     </div>
 
+    <!-- MODAL DE EDICIÓN DE PLANTILLA -->
+    <div class="edit-template-modal" id="edit-template-modal">
+        <div class="edit-template-content">
+            <h3>Editar Plantilla</h3>
+            
+            <div class="control-group">
+                <label for="edit-template-title">Título de la Plantilla:</label>
+                <input type="text" id="edit-template-title" class="templates-input" placeholder="Título de la plantilla">
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-description">Descripción:</label>
+                <textarea id="edit-template-description" class="templates-input" rows="4" placeholder="Descripción de la plantilla"></textarea>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-category">Categoría:</label>
+                <select id="edit-template-category" class="templates-input">
+                    <option value="">Seleccionar categoría</option>
+                    <option value="Planners">Planners</option>
+                    <option value="Calendarios">Calendarios</option>
+                    <option value="Tarjetas">Tarjetas</option>
+                    <option value="Invitaciones">Invitaciones</option>
+                    <option value="Flyers">Flyers</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Presentaciones">Presentaciones</option>
+                    <option value="Documentos">Documentos</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-format">Formato:</label>
+                <select id="edit-template-format" class="templates-input">
+                    <option value="">Seleccionar formato</option>
+                    <option value="PDF">PDF</option>
+                    <option value="JPG">JPG</option>
+                    <option value="PNG">PNG</option>
+                    <option value="PPT">PowerPoint</option>
+                    <option value="DOC">Word</option>
+                    <option value="Canva Template">Plantilla Canva</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="edit-template-thumbnail">Portada:</label>
+                <div class="image-upload-container" id="edit-template-image-upload-container">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Haz clic para cambiar la portada</p>
+                </div>
+                <input type="file" id="edit-template-thumbnail-file" accept="image/*" style="display: none;">
+                <div class="thumbnail-preview" id="edit-template-thumbnail-preview">
+                    <i class="fas fa-image" style="font-size: 48px; color: #ddd;"></i>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" id="cancel-edit-template">Cancelar</button>
+                <button class="btn delete-btn" id="delete-template-btn">
+                    <i class="fas fa-trash"></i> Eliminar Plantilla
+                </button>
+                <button class="btn btn-primary" id="save-edit-template">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA SELECCIONAR TAMAÑO DE LIENZO -->
+    <div class="modal-overlay" id="canvas-size-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Selecciona el Tamaño del Lienzo</h2>
+                <p>Elige el tamaño y orientación para tu nueva invitación</p>
+            </div>
+            
+            <div class="orientation-options" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+                <div class="orientation-option selected" data-orientation="vertical" style="border: 2px solid var(--editor-secondary); border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: all 0.3s; text-align: center; flex: 1; max-width: 150px;">
+                    <div>Vertical</div>
+                </div>
+                <div class="orientation-option" data-orientation="horizontal" style="border: 2px solid var(--editor-secondary); border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: all 0.3s; text-align: center; flex: 1; max-width: 150px;">
+                    <div>Horizontal</div>
+                </div>
+            </div>
+            
+            <div class="size-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <!-- Opciones de tamaño se generarán dinámicamente -->
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" id="cancel-btn">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-btn">Crear Invitación</button>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
         <div class="container">
@@ -2962,6 +2914,19 @@
         let currentTemplateThumbnail = '';
         let currentTemplateType = 'google';
         
+        // Variables del editor
+        let currentProject = null;
+        let projects = JSON.parse(localStorage.getItem('invitationProjects')) || [];
+        let editMode = true;
+        let selectedElement = null;
+        let isDragging = false;
+        let isResizing = false;
+        let dragOffsetX, dragOffsetY;
+        let currentZIndex = 10;
+        let resizeDirection = null;
+        let selectedSize = null;
+        let selectedOrientation = 'vertical';
+        
         // INICIALIZAR TODO
         document.addEventListener('DOMContentLoaded', function() {
             initMobileMenu();
@@ -2973,6 +2938,7 @@
             initVideoTypeSelector();
             initTemplateTypeSelector();
             initSearch();
+            initEditor();
         });
         
         // MENÚ HAMBURGUESA
@@ -3264,6 +3230,8 @@
             } else if (tabName === 'plantillas-gratis') {
                 loadTemplates();
                 resetTemplateForm();
+            } else if (tabName === 'editor') {
+                loadProjects();
             }
         }
         
@@ -3279,7 +3247,7 @@
         
         function showSearchModal() {
             const modal = document.createElement('div');
-            modal.className = 'modal';
+            modal.className = 'modal-overlay';
             modal.id = 'search-modal';
             modal.style.display = 'flex';
             
@@ -3314,6 +3282,64 @@
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) document.body.removeChild(modal);
             });
+        }
+        
+        function performSearch(query) {
+            const resultsDiv = document.getElementById('search-results');
+            if (!resultsDiv) return;
+            
+            const searchTerm = query.toLowerCase();
+            let results = [];
+            
+            // Buscar en productos Hotmart
+            hotmartProducts.forEach(product => {
+                if (product.title.toLowerCase().includes(searchTerm) || 
+                    product.description.toLowerCase().includes(searchTerm)) {
+                    results.push({
+                        type: 'producto',
+                        title: product.title,
+                        link: '#',
+                        onclick: () => switchTab('catalogo')
+                    });
+                }
+            });
+            
+            // Buscar en videos
+            videos.forEach(video => {
+                if (video.title.toLowerCase().includes(searchTerm) || 
+                    video.description.toLowerCase().includes(searchTerm)) {
+                    results.push({
+                        type: 'video',
+                        title: video.title,
+                        link: '#',
+                        onclick: () => switchTab('videos')
+                    });
+                }
+            });
+            
+            // Buscar en plantillas
+            templates.forEach(template => {
+                if (template.title.toLowerCase().includes(searchTerm) || 
+                    template.description.toLowerCase().includes(searchTerm)) {
+                    results.push({
+                        type: 'plantilla',
+                        title: template.title,
+                        link: '#',
+                        onclick: () => switchTab('plantillas-gratis')
+                    });
+                }
+            });
+            
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p style="text-align: center; color: #666;">No se encontraron resultados</p>';
+            } else {
+                resultsDiv.innerHTML = results.map(result => `
+                    <div style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;" onclick="switchTab('${result.type === 'producto' ? 'catalogo' : (result.type === 'video' ? 'videos' : 'plantillas-gratis')}'); document.body.removeChild(document.getElementById('search-modal'));">
+                        <strong>${result.title}</strong>
+                        <small style="color: #999;"> (${result.type})</small>
+                    </div>
+                `).join('');
+            }
         }
         
         // HOTMART CATALOG
@@ -3381,16 +3407,16 @@
                 const imageSrc = product.thumbnail || `https://via.placeholder.com/300x200/FF6A3D/FFFFFF?text=${encodeURIComponent(product.title.substring(0, 20))}`;
                 
                 const productCard = document.createElement('div');
-                productCard.className = 'product-card canva-design-card';
+                productCard.className = 'product-card';
                 productCard.innerHTML = `
                     <div class="product-img">
-                        <img src="${imageSrc}" alt="${product.title}" class="canva-thumbnail">
+                        <img src="${imageSrc}" alt="${product.title}" class="video-thumbnail">
                     </div>
                     <div class="product-info">
                         <div class="hotmart-tag">Producto Hotmart</div>
                         <h3>${product.title}</h3>
                         <p>${product.description.substring(0, 100)}${product.description.length > 100 ? '...' : ''}</p>
-                        <div class="canva-design-info">
+                        <div class="video-info">
                             <p><strong>Precio:</strong> <span class="hotmart-price">${product.price}</span></p>
                             ${product.category ? `<p><strong>Categoría:</strong> ${product.category}</p>` : ''}
                             <p><strong>Publicado:</strong> ${new Date(product.createdAt?.toDate()).toLocaleDateString()}</p>
@@ -3737,7 +3763,7 @@
                 const tagIcon = video.type === 'youtube' ? 'fab fa-youtube' : (video.type === 'vimeo' ? 'fab fa-vimeo' : 'fas fa-video');
                 
                 const videoCard = document.createElement('div');
-                videoCard.className = 'product-card video-card';
+                videoCard.className = 'product-card';
                 videoCard.innerHTML = `
                     <div class="product-img">
                         <img src="${thumbnailSrc}" alt="${video.title}" class="video-thumbnail" data-index="${index}">
@@ -4125,7 +4151,7 @@
                 const tagText = template.type === 'google' ? 'Google Drive' : (template.type === 'canva' ? 'Canva' : 'Enlace Directo');
                 
                 const templateCard = document.createElement('div');
-                templateCard.className = 'product-card template-card';
+                templateCard.className = 'product-card';
                 templateCard.innerHTML = `
                     <div class="product-img">
                         <img src="${thumbnailSrc}" alt="${template.title}" class="template-thumbnail">
@@ -4398,7 +4424,115 @@
             document.getElementById('edit-template-modal').style.display = 'flex';
         }
         
-        // FUNCIONES AUXILIARES PARA PLANTILLAS
+        // FUNCIONES AUXILIARES
+        function isValidCheckoutUrl(url) {
+            const checkoutPattern = /^https?:\/\/(www\.)?pay\.hotmart\.com\/[A-Za-z0-9]+/;
+            return checkoutPattern.test(url);
+        }
+        
+        function extractProductIdFromUrl(url) {
+            try {
+                const urlObj = new URL(url);
+                const pathParts = urlObj.pathname.split('/').filter(part => part);
+                return pathParts[0] || '';
+            } catch (e) {
+                return '';
+            }
+        }
+        
+        async function fetchRealHotmartInfo(productId) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        title: `Producto Hotmart ${productId}`,
+                        description: `Este es un producto digital disponible en Hotmart con ID ${productId}. Incluye acceso inmediato después de la compra y actualizaciones gratuitas.`,
+                        price: "$19.99",
+                        category: "Productos Digitales",
+                        thumbnail: `https://via.placeholder.com/300x200/FF6A3D/FFFFFF?text=Hotmart+${productId.substring(0, 6)}`
+                    });
+                }, 1000);
+            });
+        }
+        
+        function isValidVideoUrl(url, type) {
+            if (type === 'youtube') {
+                const patterns = [
+                    /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/,
+                    /^(https?:\/\/)?(www\.)?youtube\.com\/embed\/[\w-]+/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            } else if (type === 'vimeo') {
+                const patterns = [
+                    /^(https?:\/\/)?(www\.)?vimeo\.com\/\d+/,
+                    /^(https?:\/\/)?(www\.)?vimeo\.com\/channels\/[\w-]+\/\d+/,
+                    /^(https?:\/\/)?(www\.)?vimeo\.com\/groups\/[\w-]+\/videos\/\d+/
+                ];
+                return patterns.some(pattern => pattern.test(url));
+            } else {
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+        }
+        
+        async function extractVideoMetadata(url, type) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const videoId = extractVideoId(url, type);
+                    let thumbnail = '';
+                    let title = '';
+                    
+                    if (type === 'youtube') {
+                        thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                        title = `Video de YouTube - ${videoId}`;
+                    } else if (type === 'vimeo') {
+                        thumbnail = `https://vumbnail.com/${videoId}.jpg`;
+                        title = `Video de Vimeo - ${videoId}`;
+                    } else {
+                        thumbnail = getDefaultThumbnail('other');
+                        title = 'Video Tutorial';
+                    }
+                    
+                    resolve({
+                        title: title,
+                        description: 'Este es un video tutorial sobre técnicas creativas. Publicado por Papelería Creativa.',
+                        thumbnail: thumbnail
+                    });
+                }, 1000);
+            });
+        }
+        
+        function extractVideoId(url, type) {
+            if (type === 'youtube') {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[7].length === 11) ? match[7] : 'demo';
+            } else if (type === 'vimeo') {
+                const regExp = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/;
+                const match = url.match(regExp);
+                return match ? match[1] : 'demo';
+            }
+            return 'demo';
+        }
+        
+        function generateEmbedCode(url, type) {
+            if (type === 'youtube') {
+                const videoId = extractVideoId(url, type);
+                return `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else if (type === 'vimeo') {
+                const videoId = extractVideoId(url, type);
+                return `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                return `<video width="100%" height="100%" controls>
+                    <source src="${url}" type="video/mp4">
+                    Tu navegador no soporta el elemento de video.
+                </video>`;
+            }
+        }
+        
         function isValidTemplateUrl(url, type) {
             if (type === 'google') {
                 const patterns = [
@@ -4413,7 +4547,6 @@
                 ];
                 return patterns.some(pattern => pattern.test(url));
             } else {
-                // Para otros tipos, aceptamos cualquier URL válida
                 try {
                     new URL(url);
                     return true;
@@ -4423,7 +4556,7 @@
             }
         }
         
-        // FUNCIONES COMPARTIDAS
+        // FUNCIONES DE IMAGEN
         function handleImageUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -4533,7 +4666,7 @@
             
             if (previewContent) {
                 previewContent.innerHTML = `
-                    ${productInfo.thumbnail ? `<img src="${productInfo.thumbnail}" alt="Portada" class="preview-image">` : ''}
+                    ${productInfo.thumbnail ? `<img src="${productInfo.thumbnail}" alt="Portada" class="preview-image" style="max-width: 100%; max-height: 150px; object-fit: contain;">` : ''}
                     <div class="preview-details">
                         <p><strong>Título:</strong> ${productInfo.title}</p>
                         <p><strong>Precio:</strong> ${productInfo.price}</p>
@@ -4554,7 +4687,7 @@
             
             if (previewContent) {
                 previewContent.innerHTML = `
-                    ${videoInfo.thumbnail ? `<img src="${videoInfo.thumbnail}" alt="Miniatura" class="preview-image">` : ''}
+                    ${videoInfo.thumbnail ? `<img src="${videoInfo.thumbnail}" alt="Miniatura" class="preview-image" style="max-width: 100%; max-height: 150px; object-fit: contain;">` : ''}
                     <div class="preview-details">
                         <p><strong>Título:</strong> ${videoInfo.title}</p>
                         <p><strong>Tipo:</strong> ${currentVideoType}</p>
@@ -4667,115 +4800,6 @@
             currentTemplateThumbnail = '';
         }
         
-        // FUNCIONES AUXILIARES PARA HOTMART
-        function isValidCheckoutUrl(url) {
-            const checkoutPattern = /^https?:\/\/(www\.)?pay\.hotmart\.com\/[A-Za-z0-9]+/;
-            return checkoutPattern.test(url);
-        }
-        
-        function extractProductIdFromUrl(url) {
-            try {
-                const urlObj = new URL(url);
-                const pathParts = urlObj.pathname.split('/').filter(part => part);
-                return pathParts[0] || '';
-            } catch (e) {
-                return '';
-            }
-        }
-        
-        async function fetchRealHotmartInfo(productId) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({
-                        title: `Producto Hotmart ${productId}`,
-                        description: `Este es un producto digital disponible en Hotmart con ID ${productId}. Incluye acceso inmediato después de la compra y actualizaciones gratuitas.`,
-                        price: "$19.99",
-                        category: "Productos Digitales",
-                        thumbnail: `https://via.placeholder.com/300x200/FF6A3D/FFFFFF?text=Hotmart+${productId.substring(0, 6)}`
-                    });
-                }, 1000);
-            });
-        }
-        
-        // FUNCIONES AUXILIARES PARA VIDEOS
-        function isValidVideoUrl(url, type) {
-            if (type === 'youtube') {
-                const patterns = [
-                    /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/,
-                    /^(https?:\/\/)?(www\.)?youtube\.com\/embed\/[\w-]+/
-                ];
-                return patterns.some(pattern => pattern.test(url));
-            } else if (type === 'vimeo') {
-                const patterns = [
-                    /^(https?:\/\/)?(www\.)?vimeo\.com\/\d+/,
-                    /^(https?:\/\/)?(www\.)?vimeo\.com\/channels\/[\w-]+\/\d+/,
-                    /^(https?:\/\/)?(www\.)?vimeo\.com\/groups\/[\w-]+\/videos\/\d+/
-                ];
-                return patterns.some(pattern => pattern.test(url));
-            } else {
-                const patterns = [
-                    /\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i,
-                    /^(https?:\/\/).+\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i
-                ];
-                return patterns.some(pattern => pattern.test(url));
-            }
-        }
-        
-        async function extractVideoMetadata(url, type) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    const videoId = extractVideoId(url, type);
-                    let thumbnail = '';
-                    let title = '';
-                    
-                    if (type === 'youtube') {
-                        thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                        title = `Video de YouTube - ${videoId}`;
-                    } else if (type === 'vimeo') {
-                        thumbnail = `https://vumbnail.com/${videoId}.jpg`;
-                        title = `Video de Vimeo - ${videoId}`;
-                    } else {
-                        thumbnail = getDefaultThumbnail('other');
-                        title = 'Video Tutorial';
-                    }
-                    
-                    resolve({
-                        title: title,
-                        description: 'Este es un video tutorial sobre técnicas creativas. Publicado por Papelería Creativa.',
-                        thumbnail: thumbnail
-                    });
-                }, 1000);
-            });
-        }
-        
-        function extractVideoId(url, type) {
-            if (type === 'youtube') {
-                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[7].length === 11) ? match[7] : 'demo';
-            } else if (type === 'vimeo') {
-                const regExp = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/;
-                const match = url.match(regExp);
-                return match ? match[1] : 'demo';
-            }
-            return 'demo';
-        }
-        
-        function generateEmbedCode(url, type) {
-            if (type === 'youtube') {
-                const videoId = extractVideoId(url, type);
-                return `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            } else if (type === 'vimeo') {
-                const videoId = extractVideoId(url, type);
-                return `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
-            } else {
-                return `<video width="100%" height="100%" controls>
-                    <source src="${url}" type="video/mp4">
-                    Tu navegador no soporta el elemento de video.
-                </video>`;
-            }
-        }
-        
         // FUNCIONES DE NOTIFICACIÓN
         function showNotification(message, type) {
             const notification = document.createElement('div');
@@ -4791,15 +4815,8 @@
                 z-index: 3000;
                 animation: slideIn 0.3s ease;
                 max-width: 300px;
+                background-color: ${type === 'success' ? 'var(--success)' : 'var(--error)'};
             `;
-            
-            if (type === 'success') {
-                notification.style.backgroundColor = 'var(--success)';
-            } else if (type === 'error') {
-                notification.style.backgroundColor = 'var(--error)';
-            } else {
-                notification.style.backgroundColor = 'var(--warning)';
-            }
             
             notification.innerHTML = `
                 <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
@@ -4823,13 +4840,1031 @@
             setTimeout(() => element.style.display = 'none', 5000);
         }
         
+        // FUNCIONES DEL EDITOR DE INVITACIONES
+        function initEditor() {
+            const invitationPreview = document.getElementById('invitation-preview');
+            const projectsList = document.getElementById('projects-list');
+            
+            // Botones principales
+            const newInvitationBtn = document.getElementById('new-invitation');
+            const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const exportBtn = document.getElementById('export-btn');
+            const previewBtn = document.getElementById('preview-btn');
+            
+            // Elementos de diseño
+            const elementItems = document.querySelectorAll('.element-item');
+            const bgColorOptions = document.querySelectorAll('.color-option[data-bg-color]');
+            
+            // Controles de texto
+            const fontFamilySelector = document.getElementById('font-family-selector');
+            const fontSizeSlider = document.getElementById('font-size-slider');
+            const fontSizeValue = document.getElementById('font-size-value');
+            const boldBtn = document.getElementById('bold-btn');
+            const italicBtn = document.getElementById('italic-btn');
+            const underlineBtn = document.getElementById('underline-btn');
+            const colorBtn = document.getElementById('color-btn');
+            const textColorPalette = document.getElementById('text-color-palette');
+            const textColorOptions = textColorPalette.querySelectorAll('.color-palette-item');
+            
+            // Elementos del modal de tamaño
+            const canvasSizeModal = document.getElementById('canvas-size-modal');
+            const sizeOptionsContainer = document.querySelector('.size-options');
+            const orientationOptions = document.querySelectorAll('.orientation-option');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const confirmBtn = document.getElementById('confirm-btn');
+            
+            // Definir tamaños disponibles
+            const sizeOptions = [
+                { name: 'Carta', cm: '21.59 × 27.94 cm', px: '2550 × 3300 px', width: 2550, height: 3300 },
+                { name: 'Oficio / Legal', cm: '21.59 × 35.56 cm', px: '2550 × 4200 px', width: 2550, height: 4200 },
+                { name: 'A3', cm: '29.7 × 42 cm', px: '3508 × 4961 px', width: 3508, height: 4961 },
+                { name: 'A4', cm: '21 × 29.7 cm', px: '2480 × 3508 px', width: 2480, height: 3508 },
+                { name: 'A5', cm: '14.8 × 21 cm', px: '1748 × 2480 px', width: 1748, height: 2480 },
+                { name: 'A6', cm: '10.5 × 14.8 cm', px: '1240 × 1748 px', width: 1240, height: 1748 },
+                { name: 'Oficio Colombiano (Folio)', cm: '21.5 × 33 cm', px: '2551 × 3898 px', width: 2551, height: 3898 },
+                { name: 'Tabloide', cm: '27.94 × 43.18 cm', px: '3300 × 5100 px', width: 3300, height: 5100 },
+                { name: 'Media Carta', cm: '13.97 × 21.59 cm', px: '1650 × 2550 px', width: 1650, height: 2550 },
+                { name: 'Cuarto de Carta', cm: '10.79 × 13.97 cm', px: '1275 × 1650 px', width: 1275, height: 1650 },
+                { name: 'Legal Extra (Oficio extendido)', cm: '22 × 36 cm', px: '2598 × 4252 px', width: 2598, height: 4252 }
+            ];
+            
+            // Generar opciones de tamaño
+            function generateSizeOptions() {
+                if (!sizeOptionsContainer) return;
+                
+                sizeOptionsContainer.innerHTML = '';
+                
+                sizeOptions.forEach((size, index) => {
+                    const sizeOption = document.createElement('div');
+                    sizeOption.className = 'size-option';
+                    sizeOption.dataset.index = index;
+                    sizeOption.style.cssText = 'border: 2px solid var(--editor-secondary); border-radius: 8px; padding: 15px; cursor: pointer; transition: all 0.3s; text-align: center;';
+                    
+                    sizeOption.innerHTML = `
+                        <div style="font-weight: bold; margin-bottom: 5px;">${size.name}</div>
+                        <div style="font-size: 0.9rem; color: var(--text);">${size.cm}</div>
+                        <div style="font-size: 0.9rem; color: var(--text);">${size.px}</div>
+                    `;
+                    
+                    sizeOption.addEventListener('click', function() {
+                        document.querySelectorAll('.size-option').forEach(opt => {
+                            opt.style.borderColor = 'var(--editor-secondary)';
+                            opt.style.backgroundColor = 'transparent';
+                        });
+                        this.style.borderColor = 'var(--editor-accent)';
+                        this.style.backgroundColor = 'rgba(44, 85, 48, 0.1)';
+                        selectedSize = size;
+                    });
+                    
+                    sizeOptionsContainer.appendChild(sizeOption);
+                });
+                
+                // Seleccionar A4 por defecto
+                const a4Option = document.querySelector('.size-option[data-index="3"]');
+                if (a4Option) {
+                    a4Option.style.borderColor = 'var(--editor-accent)';
+                    a4Option.style.backgroundColor = 'rgba(44, 85, 48, 0.1)';
+                }
+                selectedSize = sizeOptions[3];
+            }
+            
+            generateSizeOptions();
+            
+            // Event listeners del editor
+            if (newInvitationBtn) {
+                newInvitationBtn.addEventListener('click', function() {
+                    canvasSizeModal.style.display = 'flex';
+                });
+            }
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    canvasSizeModal.style.display = 'none';
+                });
+            }
+            
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    if (selectedSize) {
+                        createNewInvitationWithSize();
+                        canvasSizeModal.style.display = 'none';
+                    } else {
+                        alert('Por favor, selecciona un tamaño para el lienzo');
+                    }
+                });
+            }
+            
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que quieres limpiar la invitación? Se perderán todos los cambios no guardados.')) {
+                        invitationPreview.innerHTML = '';
+                        currentProject = null;
+                    }
+                });
+            }
+            
+            if (saveBtn) {
+                saveBtn.addEventListener('click', saveProject);
+            }
+            
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportInvitation);
+            }
+            
+            if (previewBtn) {
+                previewBtn.addEventListener('click', togglePreviewMode);
+            }
+            
+            // Elementos de diseño
+            elementItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    addElementByType(type, 100, 100);
+                });
+            });
+            
+            // Opciones de color de fondo
+            bgColorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    bgColorOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    changeBackgroundColor(this.dataset.bgColor);
+                });
+            });
+            
+            // Orientación
+            orientationOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    orientationOptions.forEach(opt => {
+                        opt.style.borderColor = 'var(--editor-secondary)';
+                        opt.style.backgroundColor = 'transparent';
+                    });
+                    this.style.borderColor = 'var(--editor-accent)';
+                    this.style.backgroundColor = 'rgba(44, 85, 48, 0.1)';
+                    selectedOrientation = this.dataset.orientation;
+                });
+            });
+            
+            // Controles de texto
+            if (fontFamilySelector) {
+                fontFamilySelector.addEventListener('change', function() {
+                    applyTextStyle();
+                });
+            }
+            
+            if (fontSizeSlider) {
+                fontSizeSlider.addEventListener('input', function() {
+                    fontSizeValue.textContent = this.value + 'px';
+                    applyTextStyle();
+                });
+            }
+            
+            if (boldBtn) {
+                boldBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    applyTextStyle();
+                });
+            }
+            
+            if (italicBtn) {
+                italicBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    applyTextStyle();
+                });
+            }
+            
+            if (underlineBtn) {
+                underlineBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    applyTextStyle();
+                });
+            }
+            
+            if (colorBtn) {
+                colorBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Abrir selector de color nativo
+                    const colorInput = document.createElement('input');
+                    colorInput.type = 'color';
+                    colorInput.addEventListener('input', function() {
+                        applyTextColor(this.value);
+                    });
+                    colorInput.click();
+                });
+            }
+            
+            textColorOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    textColorOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    applyTextColor(this.dataset.color);
+                });
+            });
+            
+            // Función para crear nueva invitación con tamaño
+            function createNewInvitationWithSize() {
+                invitationPreview.innerHTML = '';
+                
+                let width, height;
+                if (selectedOrientation === 'vertical') {
+                    width = selectedSize.width;
+                    height = selectedSize.height;
+                } else {
+                    width = selectedSize.height;
+                    height = selectedSize.width;
+                }
+                
+                const containerWidth = invitationPreview.parentElement.offsetWidth;
+                const containerHeight = invitationPreview.parentElement.offsetHeight;
+                
+                const widthRatio = containerWidth / width;
+                const heightRatio = containerHeight / height;
+                const scale = Math.min(widthRatio, heightRatio) * 0.9;
+                
+                const scaledWidth = width * scale;
+                const scaledHeight = height * scale;
+                
+                invitationPreview.style.width = `${scaledWidth}px`;
+                invitationPreview.style.height = `${scaledHeight}px`;
+                invitationPreview.style.minHeight = `${scaledHeight}px`;
+                
+                document.documentElement.style.setProperty('--canvas-bg', '#f0f1f5');
+                bgColorOptions.forEach(opt => {
+                    if (opt.dataset.bgColor === '#f0f1f5') {
+                        opt.classList.add('active');
+                    } else {
+                        opt.classList.remove('active');
+                    }
+                });
+                
+                currentProject = null;
+            }
+            
+            function addElementByType(type, x, y) {
+                switch(type) {
+                    case 'title':
+                        addTitleElement(x, y);
+                        break;
+                    case 'text':
+                        addTextElement(x, y);
+                        break;
+                    case 'details':
+                        addDetailsElement(x, y);
+                        break;
+                    case 'image':
+                        addImageElement(x, y);
+                        break;
+                    case 'decoration':
+                        addDecorationElement(x, y);
+                        break;
+                }
+            }
+            
+            function addTitleElement(x, y) {
+                const id = 'title-' + Date.now();
+                const titleElement = document.createElement('div');
+                titleElement.className = 'draggable';
+                titleElement.id = id;
+                titleElement.style.position = 'absolute';
+                titleElement.style.left = x + 'px';
+                titleElement.style.top = y + 'px';
+                titleElement.style.width = '500px';
+                titleElement.style.textAlign = 'center';
+                titleElement.style.zIndex = currentZIndex++;
+                
+                titleElement.innerHTML = `
+                    <div class="element-controls">
+                        <button title="Eliminar" class="delete-btn">🗑️</button>
+                        <button title="Traer al Frente" class="bring-front-btn">⬆️</button>
+                        <button title="Enviar Atrás" class="send-back-btn">⬇️</button>
+                    </div>
+                    <h2 class="editable-text" style="color: var(--editor-accent); font-size: 2.5rem;" contenteditable="true">Título de la Invitación</h2>
+                    <div class="resize-handle bottom-right"></div>
+                    <div class="resize-handle bottom-left"></div>
+                    <div class="resize-handle top-right"></div>
+                    <div class="resize-handle top-left"></div>
+                `;
+                
+                invitationPreview.appendChild(titleElement);
+                setupElementInteractions(titleElement);
+                selectElement(titleElement);
+            }
+            
+            function addTextElement(x, y) {
+                const id = 'text-' + Date.now();
+                const textElement = document.createElement('div');
+                textElement.className = 'draggable';
+                textElement.id = id;
+                textElement.style.position = 'absolute';
+                textElement.style.left = x + 'px';
+                textElement.style.top = y + 'px';
+                textElement.style.width = '500px';
+                textElement.style.zIndex = currentZIndex++;
+                
+                textElement.innerHTML = `
+                    <div class="element-controls">
+                        <button title="Eliminar" class="delete-btn">🗑️</button>
+                        <button title="Traer al Frente" class="bring-front-btn">⬆️</button>
+                        <button title="Enviar Atrás" class="send-back-btn">⬇️</button>
+                    </div>
+                    <p class="editable-text" style="text-align: center; line-height: 1.6; font-size: 1.1rem;" contenteditable="true">
+                        Escribe tu texto aquí...
+                    </p>
+                    <div class="resize-handle bottom-right"></div>
+                    <div class="resize-handle bottom-left"></div>
+                    <div class="resize-handle top-right"></div>
+                    <div class="resize-handle top-left"></div>
+                `;
+                
+                invitationPreview.appendChild(textElement);
+                setupElementInteractions(textElement);
+                selectElement(textElement);
+            }
+            
+            function addDetailsElement(x, y) {
+                const id = 'details-' + Date.now();
+                const detailsElement = document.createElement('div');
+                detailsElement.className = 'draggable';
+                detailsElement.id = id;
+                detailsElement.style.position = 'absolute';
+                detailsElement.style.left = x + 'px';
+                detailsElement.style.top = y + 'px';
+                detailsElement.style.width = '500px';
+                detailsElement.style.zIndex = currentZIndex++;
+                
+                detailsElement.innerHTML = `
+                    <div class="element-controls">
+                        <button title="Eliminar" class="delete-btn">🗑️</button>
+                        <button title="Traer al Frente" class="bring-front-btn">⬆️</button>
+                        <button title="Enviar Atrás" class="send-back-btn">⬇️</button>
+                    </div>
+                    <div style="background: rgba(74, 111, 165, 0.1); padding: 20px; border-radius: 10px;">
+                        <h3 class="editable-text" style="color: var(--dark); text-align: center; margin-bottom: 15px;" contenteditable="true">Detalles del Evento</h3>
+                        <div style="display: flex; margin-bottom: 10px; align-items: center;">
+                            <span style="font-weight: bold; width: 120px; color: var(--dark);">Fecha:</span>
+                            <span class="editable-text" contenteditable="true">Por definir</span>
+                        </div>
+                        <div style="display: flex; margin-bottom: 10px; align-items: center;">
+                            <span style="font-weight: bold; width: 120px; color: var(--dark);">Hora:</span>
+                            <span class="editable-text" contenteditable="true">Por definir</span>
+                        </div>
+                        <div style="display: flex; margin-bottom: 10px; align-items: center;">
+                            <span style="font-weight: bold; width: 120px; color: var(--dark);">Lugar:</span>
+                            <span class="editable-text" contenteditable="true">Por definir</span>
+                        </div>
+                    </div>
+                    <div class="resize-handle bottom-right"></div>
+                    <div class="resize-handle bottom-left"></div>
+                    <div class="resize-handle top-right"></div>
+                    <div class="resize-handle top-left"></div>
+                `;
+                
+                invitationPreview.appendChild(detailsElement);
+                setupElementInteractions(detailsElement);
+                selectElement(detailsElement);
+            }
+            
+            function addImageElement(x, y) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.style.display = 'none';
+                document.body.appendChild(input);
+                
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const id = 'image-' + Date.now();
+                            const imgElement = document.createElement('div');
+                            imgElement.className = 'draggable';
+                            imgElement.id = id;
+                            imgElement.style.position = 'absolute';
+                            imgElement.style.left = x + 'px';
+                            imgElement.style.top = y + 'px';
+                            imgElement.style.width = '300px';
+                            imgElement.style.zIndex = currentZIndex++;
+                            
+                            imgElement.innerHTML = `
+                                <img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: contain; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                <div class="resize-handle bottom-right"></div>
+                                <div class="resize-handle bottom-left"></div>
+                                <div class="resize-handle top-right"></div>
+                                <div class="resize-handle top-left"></div>
+                            `;
+                            
+                            invitationPreview.appendChild(imgElement);
+                            setupImageControls(imgElement);
+                            setupElementInteractions(imgElement);
+                            selectElement(imgElement);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    
+                    document.body.removeChild(input);
+                });
+                
+                input.click();
+            }
+            
+            function addDecorationElement(x, y) {
+                const decorations = ['✨', '🌟', '🎉', '🎊', '❤️', '💫', '🎈', '🥳'];
+                const randomDecoration = decorations[Math.floor(Math.random() * decorations.length)];
+                
+                const id = 'decoration-' + Date.now();
+                const decorationElement = document.createElement('div');
+                decorationElement.className = 'draggable';
+                decorationElement.id = id;
+                decorationElement.style.position = 'absolute';
+                decorationElement.style.left = x + 'px';
+                decorationElement.style.top = y + 'px';
+                decorationElement.style.fontSize = '60px';
+                decorationElement.style.opacity = '0.7';
+                decorationElement.style.zIndex = currentZIndex++;
+                decorationElement.style.cursor = 'move';
+                decorationElement.style.userSelect = 'none';
+                decorationElement.style.textAlign = 'center';
+                decorationElement.style.width = '80px';
+                decorationElement.style.height = '80px';
+                
+                decorationElement.innerHTML = `
+                    <div class="element-controls">
+                        <button title="Eliminar" class="delete-btn">🗑️</button>
+                        <button title="Traer al Frente" class="bring-front-btn">⬆️</button>
+                        <button title="Enviar Atrás" class="send-back-btn">⬇️</button>
+                    </div>
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">${randomDecoration}</div>
+                    <div class="resize-handle bottom-right"></div>
+                    <div class="resize-handle bottom-left"></div>
+                    <div class="resize-handle top-right"></div>
+                    <div class="resize-handle top-left"></div>
+                `;
+                
+                invitationPreview.appendChild(decorationElement);
+                setupElementInteractions(decorationElement);
+                selectElement(decorationElement);
+            }
+            
+            function setupImageControls(element) {
+                if (!element.querySelector('.image-controls')) {
+                    const imageControls = document.createElement('div');
+                    imageControls.className = 'image-controls';
+                    
+                    imageControls.innerHTML = `
+                        <button title="Girar izquierda" class="rotate-left-btn">↶</button>
+                        <button title="Girar derecha" class="rotate-right-btn">↷</button>
+                        <button title="Reflejar horizontal" class="flip-h-btn">⇄</button>
+                        <button title="Reflejar vertical" class="flip-v-btn">⇅</button>
+                        <button title="Bordes redondos" class="border-radius-btn">⭘</button>
+                        <div class="slider-container">
+                            <label>Transparencia:</label>
+                            <input type="range" class="opacity-slider" min="0" max="100" value="100">
+                            <span class="opacity-value">100%</span>
+                        </div>
+                        <button title="Eliminar" class="delete-btn">🗑️</button>
+                        <button title="Traer al Frente" class="bring-front-btn">⬆️</button>
+                        <button title="Enviar Atrás" class="send-back-btn">⬇️</button>
+                    `;
+                    
+                    element.appendChild(imageControls);
+                    
+                    const rotateLeftBtn = imageControls.querySelector('.rotate-left-btn');
+                    const rotateRightBtn = imageControls.querySelector('.rotate-right-btn');
+                    const flipHBtn = imageControls.querySelector('.flip-h-btn');
+                    const flipVBtn = imageControls.querySelector('.flip-v-btn');
+                    const borderRadiusBtn = imageControls.querySelector('.border-radius-btn');
+                    const opacitySlider = imageControls.querySelector('.opacity-slider');
+                    const opacityValue = imageControls.querySelector('.opacity-value');
+                    const deleteBtn = imageControls.querySelector('.delete-btn');
+                    const bringFrontBtn = imageControls.querySelector('.bring-front-btn');
+                    const sendBackBtn = imageControls.querySelector('.send-back-btn');
+                    
+                    if (rotateLeftBtn) {
+                        rotateLeftBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const img = element.querySelector('img');
+                            if (img) {
+                                const currentTransform = img.style.transform || '';
+                                const currentRotation = getCurrentRotation(currentTransform);
+                                img.style.transform = `rotate(${currentRotation - 90}deg)`;
+                            }
+                        });
+                    }
+                    
+                    if (rotateRightBtn) {
+                        rotateRightBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const img = element.querySelector('img');
+                            if (img) {
+                                const currentTransform = img.style.transform || '';
+                                const currentRotation = getCurrentRotation(currentTransform);
+                                img.style.transform = `rotate(${currentRotation + 90}deg)`;
+                            }
+                        });
+                    }
+                    
+                    if (flipHBtn) {
+                        flipHBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const img = element.querySelector('img');
+                            if (img) {
+                                const currentTransform = img.style.transform || '';
+                                let scaleX = 1;
+                                if (currentTransform.includes('scaleX(-1)')) {
+                                    scaleX = -1;
+                                }
+                                const newScaleX = scaleX * -1;
+                                const currentRotation = getCurrentRotation(currentTransform);
+                                img.style.transform = `rotate(${currentRotation}deg) scaleX(${newScaleX})`;
+                            }
+                        });
+                    }
+                    
+                    if (flipVBtn) {
+                        flipVBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const img = element.querySelector('img');
+                            if (img) {
+                                const currentTransform = img.style.transform || '';
+                                let scaleY = 1;
+                                if (currentTransform.includes('scaleY(-1)')) {
+                                    scaleY = -1;
+                                }
+                                const newScaleY = scaleY * -1;
+                                const currentRotation = getCurrentRotation(currentTransform);
+                                img.style.transform = `rotate(${currentRotation}deg) scaleY(${newScaleY})`;
+                            }
+                        });
+                    }
+                    
+                    if (borderRadiusBtn) {
+                        borderRadiusBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const img = element.querySelector('img');
+                            if (img) {
+                                if (img.style.borderRadius === '50%') {
+                                    img.style.borderRadius = '0';
+                                } else {
+                                    img.style.borderRadius = '50%';
+                                }
+                            }
+                        });
+                    }
+                    
+                    if (opacitySlider) {
+                        opacitySlider.addEventListener('input', function(e) {
+                            e.stopPropagation();
+                            const img = element.querySelector('img');
+                            if (img) {
+                                const opacity = this.value / 100;
+                                img.style.opacity = opacity;
+                                opacityValue.textContent = this.value + '%';
+                            }
+                        });
+                    }
+                    
+                    if (deleteBtn) {
+                        deleteBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            element.remove();
+                        });
+                    }
+                    
+                    if (bringFrontBtn) {
+                        bringFrontBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            currentZIndex++;
+                            element.style.zIndex = currentZIndex;
+                        });
+                    }
+                    
+                    if (sendBackBtn) {
+                        sendBackBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            currentZIndex--;
+                            element.style.zIndex = currentZIndex;
+                        });
+                    }
+                }
+            }
+            
+            function getCurrentRotation(transform) {
+                const match = transform.match(/rotate\(([^)]+)deg\)/);
+                return match ? parseFloat(match[1]) : 0;
+            }
+            
+            function setupElementInteractions(element) {
+                element.addEventListener('mousedown', function(e) {
+                    if (e.target.classList.contains('resize-handle')) {
+                        startResize(e, element);
+                    } else if (!e.target.classList.contains('editable-text') && 
+                               !e.target.closest('.image-controls') &&
+                               !e.target.closest('.element-controls')) {
+                        selectElement(element);
+                        startDrag(e, element);
+                    }
+                });
+                
+                const deleteBtn = element.querySelector('.delete-btn:not(.image-controls .delete-btn)');
+                const bringFrontBtn = element.querySelector('.bring-front-btn:not(.image-controls .bring-front-btn)');
+                const sendBackBtn = element.querySelector('.send-back-btn:not(.image-controls .send-back-btn)');
+                
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        element.remove();
+                    });
+                }
+                
+                if (bringFrontBtn) {
+                    bringFrontBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        currentZIndex++;
+                        element.style.zIndex = currentZIndex;
+                    });
+                }
+                
+                if (sendBackBtn) {
+                    sendBackBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        currentZIndex--;
+                        element.style.zIndex = currentZIndex;
+                    });
+                }
+            }
+            
+            function startDrag(e, element) {
+                if (!editMode) return;
+                
+                const rect = element.getBoundingClientRect();
+                const previewRect = invitationPreview.getBoundingClientRect();
+                
+                dragOffsetX = e.clientX - rect.left;
+                dragOffsetY = e.clientY - rect.top;
+                
+                isDragging = true;
+                element.style.cursor = 'grabbing';
+                
+                function onMouseMove(e) {
+                    if (!isDragging) return;
+                    
+                    const newX = e.clientX - previewRect.left - dragOffsetX;
+                    const newY = e.clientY - previewRect.top - dragOffsetY;
+                    
+                    element.style.left = `${Math.max(0, Math.min(newX, invitationPreview.offsetWidth - element.offsetWidth))}px`;
+                    element.style.top = `${Math.max(0, Math.min(newY, invitationPreview.offsetHeight - element.offsetHeight))}px`;
+                }
+                
+                function onMouseUp() {
+                    isDragging = false;
+                    element.style.cursor = 'move';
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                }
+                
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+                
+                e.preventDefault();
+            }
+            
+            function startResize(e, element) {
+                if (!editMode) return;
+                
+                selectElement(element);
+                isResizing = true;
+                resizeDirection = e.target.classList[1];
+                
+                const startX = e.clientX;
+                const startY = e.clientY;
+                const startWidth = parseInt(element.style.width) || element.offsetWidth;
+                const startHeight = parseInt(element.style.height) || element.offsetHeight;
+                const startLeft = parseInt(element.style.left);
+                const startTop = parseInt(element.style.top);
+                
+                function onMouseMove(e) {
+                    if (!isResizing) return;
+                    
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
+                    
+                    let newWidth = startWidth;
+                    let newHeight = startHeight;
+                    let newLeft = startLeft;
+                    let newTop = startTop;
+                    
+                    switch(resizeDirection) {
+                        case 'bottom-right':
+                            newWidth = Math.max(100, startWidth + deltaX);
+                            newHeight = Math.max(40, startHeight + deltaY);
+                            break;
+                        case 'bottom-left':
+                            newWidth = Math.max(100, startWidth - deltaX);
+                            newHeight = Math.max(40, startHeight + deltaY);
+                            newLeft = startLeft + deltaX;
+                            break;
+                        case 'top-right':
+                            newWidth = Math.max(100, startWidth + deltaX);
+                            newHeight = Math.max(40, startHeight - deltaY);
+                            newTop = startTop + deltaY;
+                            break;
+                        case 'top-left':
+                            newWidth = Math.max(100, startWidth - deltaX);
+                            newHeight = Math.max(40, startHeight - deltaY);
+                            newLeft = startLeft + deltaX;
+                            newTop = startTop + deltaY;
+                            break;
+                    }
+                    
+                    element.style.width = `${newWidth}px`;
+                    element.style.height = `${newHeight}px`;
+                    element.style.left = `${newLeft}px`;
+                    element.style.top = `${newTop}px`;
+                }
+                
+                function onMouseUp() {
+                    isResizing = false;
+                    resizeDirection = null;
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                }
+                
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+                
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            function selectElement(element) {
+                deselectAll();
+                element.classList.add('selected');
+                selectedElement = element;
+                
+                const controls = element.querySelector('.element-controls');
+                if (controls) {
+                    controls.style.display = 'flex';
+                }
+                
+                const imageControls = element.querySelector('.image-controls');
+                if (imageControls) {
+                    imageControls.style.display = 'flex';
+                }
+                
+                updateTextControls();
+            }
+            
+            function deselectAll() {
+                document.querySelectorAll('.draggable.selected').forEach(el => {
+                    el.classList.remove('selected');
+                    const controls = el.querySelector('.element-controls');
+                    if (controls) {
+                        controls.style.display = 'none';
+                    }
+                    const imageControls = el.querySelector('.image-controls');
+                    if (imageControls) {
+                        imageControls.style.display = 'none';
+                    }
+                });
+                selectedElement = null;
+            }
+            
+            function updateTextControls() {
+                if (!selectedElement) return;
+                
+                const textElement = selectedElement.querySelector('.editable-text');
+                if (!textElement) return;
+                
+                const styles = window.getComputedStyle(textElement);
+                
+                if (fontFamilySelector) {
+                    fontFamilySelector.value = styles.fontFamily;
+                }
+                
+                const fontSize = parseInt(styles.fontSize);
+                if (fontSizeSlider) {
+                    fontSizeSlider.value = fontSize;
+                }
+                if (fontSizeValue) {
+                    fontSizeValue.textContent = fontSize + 'px';
+                }
+                
+                if (boldBtn) {
+                    boldBtn.classList.toggle('active', styles.fontWeight === 'bold' || styles.fontWeight === '700');
+                }
+                if (italicBtn) {
+                    italicBtn.classList.toggle('active', styles.fontStyle === 'italic');
+                }
+                if (underlineBtn) {
+                    underlineBtn.classList.toggle('active', styles.textDecoration.includes('underline'));
+                }
+                
+                const currentColor = styles.color;
+                textColorOptions.forEach(option => {
+                    if (option.dataset.color === currentColor) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+            }
+            
+            function applyTextStyle() {
+                if (!selectedElement) {
+                    alert('Por favor, selecciona un elemento de texto primero');
+                    return;
+                }
+                
+                const textElements = selectedElement.querySelectorAll('.editable-text');
+                if (textElements.length === 0) return;
+                
+                textElements.forEach(textElement => {
+                    if (fontFamilySelector) {
+                        textElement.style.fontFamily = fontFamilySelector.value;
+                    }
+                    
+                    if (fontSizeSlider) {
+                        textElement.style.fontSize = fontSizeSlider.value + 'px';
+                    }
+                    
+                    if (boldBtn) {
+                        textElement.style.fontWeight = boldBtn.classList.contains('active') ? 'bold' : 'normal';
+                    }
+                    
+                    if (italicBtn) {
+                        textElement.style.fontStyle = italicBtn.classList.contains('active') ? 'italic' : 'normal';
+                    }
+                    
+                    if (underlineBtn) {
+                        textElement.style.textDecoration = underlineBtn.classList.contains('active') ? 'underline' : 'none';
+                    }
+                });
+            }
+            
+            function applyTextColor(color) {
+                if (!selectedElement) {
+                    alert('Por favor, selecciona un elemento de texto primero');
+                    return;
+                }
+                
+                const textElements = selectedElement.querySelectorAll('.editable-text');
+                if (textElements.length === 0) return;
+                
+                textElements.forEach(textElement => {
+                    textElement.style.color = color;
+                });
+            }
+            
+            function changeBackgroundColor(color) {
+                document.documentElement.style.setProperty('--canvas-bg', color);
+            }
+            
+            function saveProject() {
+                const name = prompt('Nombre para guardar esta invitación:', 'Mi Invitación');
+                if (!name) return;
+                
+                const content = invitationPreview.innerHTML;
+                
+                const project = {
+                    id: Date.now(),
+                    name,
+                    content,
+                    createdAt: new Date().toISOString(),
+                    theme: {
+                        font: invitationPreview.style.fontFamily || 'inherit',
+                        canvasBg: getComputedStyle(document.documentElement).getPropertyValue('--canvas-bg').trim()
+                    }
+                };
+                
+                if (currentProject) {
+                    const index = projects.findIndex(p => p.id === currentProject.id);
+                    if (index !== -1) {
+                        projects[index] = {...project, id: currentProject.id};
+                    }
+                } else {
+                    projects.push(project);
+                }
+                
+                localStorage.setItem('invitationProjects', JSON.stringify(projects));
+                loadProjects();
+                
+                showNotification('Proyecto guardado correctamente', 'success');
+            }
+            
+            function loadProjects() {
+                if (!projectsList) return;
+                
+                projectsList.innerHTML = '';
+                
+                if (projects.length === 0) {
+                    projectsList.innerHTML = '<p style="color: #666; text-align: center;">No hay proyectos guardados</p>';
+                    return;
+                }
+                
+                projects.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item';
+                    projectItem.innerHTML = `
+                        <h4>${project.name}</h4>
+                        <p>Creado: ${new Date(project.createdAt).toLocaleDateString()}</p>
+                    `;
+                    
+                    projectItem.addEventListener('click', () => loadProject(project));
+                    projectsList.appendChild(projectItem);
+                });
+            }
+            
+            function loadProject(project) {
+                currentProject = project;
+                invitationPreview.innerHTML = project.content;
+                
+                document.querySelectorAll('.draggable').forEach(el => setupElementInteractions(el));
+                document.querySelectorAll('.draggable:has(img)').forEach(el => setupImageControls(el));
+                
+                if (project.theme) {
+                    document.documentElement.style.setProperty('--canvas-bg', project.theme.canvasBg || '#f0f1f5');
+                    
+                    bgColorOptions.forEach(option => {
+                        if (option.dataset.bgColor === project.theme.canvasBg) {
+                            option.classList.add('active');
+                        } else {
+                            option.classList.remove('active');
+                        }
+                    });
+                }
+                
+                showNotification('Proyecto cargado correctamente', 'success');
+            }
+            
+            function togglePreviewMode() {
+                editMode = !editMode;
+                
+                document.querySelectorAll('.draggable').forEach(el => {
+                    el.querySelectorAll('.editable-text').forEach(editable => {
+                        editable.contentEditable = editMode;
+                    });
+                    
+                    if (editMode) {
+                        el.style.cursor = 'move';
+                    } else {
+                        el.style.cursor = 'default';
+                        el.classList.remove('selected');
+                        const controls = el.querySelector('.element-controls');
+                        if (controls) {
+                            controls.style.display = 'none';
+                        }
+                        const imageControls = el.querySelector('.image-controls');
+                        if (imageControls) {
+                            imageControls.style.display = 'none';
+                        }
+                    }
+                });
+                
+                previewBtn.textContent = editMode ? '👁️ Vista Previa' : '✏️ Modo Edición';
+            }
+            
+            function exportInvitation() {
+                const loadingOverlay = document.createElement('div');
+                loadingOverlay.className = 'loading-overlay';
+                loadingOverlay.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: flex; justify-content: center; align-items: center; border-radius: 10px; z-index: 10;';
+                loadingOverlay.innerHTML = '<div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--editor-accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>';
+                
+                const previewContainer = document.querySelector('.editor-preview-container');
+                previewContainer.style.position = 'relative';
+                previewContainer.appendChild(loadingOverlay);
+                
+                html2canvas(invitationPreview, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: null,
+                    allowTaint: true,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'invitacion.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    previewContainer.removeChild(loadingOverlay);
+                    showNotification('Invitación exportada exitosamente', 'success');
+                }).catch(error => {
+                    console.error('Error al exportar:', error);
+                    previewContainer.removeChild(loadingOverlay);
+                    showNotification('Error al exportar la invitación', 'error');
+                });
+            }
+        }
+        
         // FUNCIONES GLOBALES
         window.switchTab = switchTab;
         window.showAuthModal = showAuthModal;
         window.handleLogout = handleLogout;
-        window.editHotmartProduct = editHotmartProduct;
-        window.editVideo = editVideo;
-        window.editTemplate = editTemplate;
         window.closeMobileMenu = closeMobileMenu;
         window.filterVideos = function(category) {
             document.getElementById('category-filter').value = category;
@@ -4854,6 +5889,10 @@
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
             }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
             
             .notification {
                 position: fixed;
@@ -4875,11 +5914,59 @@
             .notification.error {
                 background-color: var(--error);
             }
+            
+            .notification.warning {
+                background-color: var(--warning);
+            }
+            
+            .size-option.selected {
+                border-color: var(--editor-accent);
+                background-color: rgba(44, 85, 48, 0.1);
+            }
+            
+            .orientation-option.selected {
+                border-color: var(--editor-accent);
+                background-color: rgba(44, 85, 48, 0.1);
+            }
+            
+            .mobile-tabs {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .mobile-tab {
+                padding: 15px;
+                background-color: #f5f5f5;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.3s;
+            }
+            
+            .mobile-tab:hover {
+                background-color: #e9e9e9;
+            }
+            
+            .mobile-tab.active {
+                background-color: var(--primary);
+                color: white;
+            }
+            
+            .mobile-tab i {
+                font-size: 18px;
+                width: 24px;
+                text-align: center;
+            }
         `;
         document.head.appendChild(style);
     </script>
 </body>
 </html>
+
 
 
 
